@@ -1,5 +1,6 @@
 package com.devjima.backend.service;
 
+import com.devjima.backend.exception.ResourceNotFoundException;
 import com.devjima.backend.model.User;
 import com.devjima.backend.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,7 +44,7 @@ public class UserService {
 
   public User findByEmail(String email) {
     return userRepository.findByEmail(email)
-        .orElseThrow(() -> new RuntimeException("User not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
   }
 
 }
