@@ -1,7 +1,9 @@
 package com.devjima.backend.controller;
 
-import com.devjima.backend.dto.RegisterRequest;
+import com.devjima.backend.dto.LoginRequestDTO;
+import com.devjima.backend.dto.RegisterRequestDTO;
 import com.devjima.backend.service.UserService;
+import com.devjima.backend.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,17 +17,31 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-  private UserService userService;
 
-  public AuthController(UserService userService){
+  private UserService userService;
+  private JwtUtil jwtUtil;
+
+  public AuthController(UserService userService, JwtUtil jwtUtil) {
     this.userService = userService;
+    this.jwtUtil = jwtUtil;
   }
 
+//  TODO: profile completion handled via PUT /api/users/{id}
   @PostMapping("/register")
   public ResponseEntity<String> registerUser(
-      @Valid @RequestBody RegisterRequest request) {
+      @Valid @RequestBody RegisterRequestDTO request) {
     userService.registerUser(request.username(), request.email(), request.password());
     return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
   }
 
+//  Method using JWT, returns a header (algorithm used - HS256)
+//  Payload - the data
+//  Signature - proves it wasn't tampered with
+  @PostMapping("/login")
+  public ResponseEntity<String> loginUser(
+      @Valid @RequestBody LoginRequestDTO request) {
+    userService.loginUser(request.email(), request.password());
+    String token = jwtUtil.generateToken(request.email());
+    return ResponseEntity.ok(token);
+  }
 }

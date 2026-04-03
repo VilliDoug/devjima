@@ -31,6 +31,16 @@ public class UserService {
     return user;
   }
 
+  public User loginUser(String email, String password) {
+    User user = userRepository.findByEmail(email)
+        .orElseThrow(() -> new RuntimeException("Unregistered email - please verify the email address"));
+
+    if (!passwordEncoder.matches(password, user.getPassword())) {
+      throw new RuntimeException("Invalid password");
+    }
+    return user;
+  }
+
 }
 
 
