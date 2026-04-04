@@ -1,6 +1,7 @@
 package com.devjima.backend.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record PostResponseDTO(
     Long id,
@@ -11,5 +12,6 @@ public record PostResponseDTO(
     Boolean published,
     Integer viewCount,
     LocalDateTime createdAt,
-    AuthorDTO author
+    AuthorDTO author,
+    List<TagDTO> tags
 ) {}

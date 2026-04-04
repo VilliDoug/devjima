@@ -2,8 +2,11 @@ package com.devjima.backend.mapper;
 
 import com.devjima.backend.dto.AuthorDTO;
 import com.devjima.backend.dto.PostResponseDTO;
+import com.devjima.backend.dto.TagDTO;
 import com.devjima.backend.model.Post;
+import com.devjima.backend.model.Tag;
 import com.devjima.backend.model.User;
+import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,6 +24,7 @@ public class DTOMapper {
     AuthorDTO authorDTO = post.getAuthor() != null
         ? toAuthorDTO(post.getAuthor())
         : null;
+    List<TagDTO> tags = post.getTags().stream().map(this::toTagDTO).toList();
 
     return new PostResponseDTO(
         post.getId(),
@@ -31,7 +35,16 @@ public class DTOMapper {
         post.getPublished(),
         post.getViewCount(),
         post.getCreatedAt(),
-        authorDTO
+        authorDTO,
+        tags
         );
+  }
+
+  public TagDTO toTagDTO(Tag tag) {
+    return new TagDTO(
+        tag.getId(),
+        tag.getName(),
+        tag.getSlug()
+    );
   }
 }

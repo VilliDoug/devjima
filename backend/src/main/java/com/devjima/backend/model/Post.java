@@ -6,9 +6,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -46,5 +50,14 @@ public class Post {
 
   @Column(name = "updated_at")
   private LocalDateTime updatedAt = LocalDateTime.now();
+
+  @ManyToMany
+  @JoinTable(
+      name = "post_tags",
+      joinColumns = @JoinColumn(name = "post_id"),
+      inverseJoinColumns = @JoinColumn(name = "tag_id")
+  )
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  private List<Tag> tags = new ArrayList<>();
 
 }
