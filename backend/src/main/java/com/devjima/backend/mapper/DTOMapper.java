@@ -1,8 +1,10 @@
 package com.devjima.backend.mapper;
 
 import com.devjima.backend.dto.AuthorDTO;
+import com.devjima.backend.dto.CommentResponseDTO;
 import com.devjima.backend.dto.PostResponseDTO;
 import com.devjima.backend.dto.TagDTO;
+import com.devjima.backend.model.Comment;
 import com.devjima.backend.model.Post;
 import com.devjima.backend.model.Tag;
 import com.devjima.backend.model.User;
@@ -57,6 +59,29 @@ public class DTOMapper {
         tag.getId(),
         tag.getName(),
         tag.getSlug()
+    );
+  }
+
+  public CommentResponseDTO toCommentResponseDTO(Comment comment) {
+    AuthorDTO authorDTO = comment.getAuthor() != null
+        ? toAuthorDTO(comment.getAuthor())
+        : null;
+
+    Node parsedBody = parser.parse(comment.getBody());
+    String bodyHtml = renderer.render(parsedBody);
+
+    return new CommentResponseDTO(
+        comment.getId(),
+        comment.getBody(),
+        bodyHtml,
+        comment.getLanguage(),
+        comment.getCreatedAt(),
+        comment.getDeleted(),
+        authorDTO,
+//        this calls itself(method), so the recursion works.
+        comment.getReplies().stream()
+            .map(this::toCommentResponseDTO)
+            .toList()
     );
   }
 }

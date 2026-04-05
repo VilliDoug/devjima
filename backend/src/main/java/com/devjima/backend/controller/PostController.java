@@ -5,10 +5,10 @@ import com.devjima.backend.dto.PostResponseDTO;
 import com.devjima.backend.model.User;
 import com.devjima.backend.service.PostService;
 import com.devjima.backend.service.UserService;
+import com.devjima.backend.util.AuthUtil;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,19 +25,19 @@ public class PostController {
 
   private final PostService postService;
   private final UserService userService;
+  private final AuthUtil authUtil;
 
-  public PostController(PostService postService, UserService userService) {
+  public PostController(
+      PostService postService, UserService userService, AuthUtil authUtil) {
     this.postService = postService;
     this.userService = userService;
+    this.authUtil = authUtil;
   }
 
   @PostMapping("/new")
   public ResponseEntity<String> createPost(
       @RequestBody CreatePostRequestDTO request) {
-    String email = (String) SecurityContextHolder.getContext()
-        .getAuthentication()
-        .getPrincipal();
-    User user = userService.findByEmail(email);
+    User user = authUtil.getCurrentUser();
 
     postService.createPost(request.title(), request.body(), request.language(), user.getId());
     return ResponseEntity.status(HttpStatus.CREATED).body("Post created successfully");
@@ -68,9 +68,7 @@ public class PostController {
       @PathVariable Long id,
       @RequestBody CreatePostRequestDTO request
   ) {
-    String email = (String) SecurityContextHolder.getContext()
-        .getAuthentication()
-        .getPrincipal();
+    String email = authUtil.getCurrentUserEmail();
 
     return ResponseEntity.ok(
         postService.updatePost(
@@ -83,9 +81,8 @@ public class PostController {
   public ResponseEntity<String> deletePost(
       @PathVariable Long id
   ) {
-    String email = (String) SecurityContextHolder.getContext()
-        .getAuthentication()
-        .getPrincipal();
+    String email = authUtil.getCurrentUserEmail();
+
     postService.deletePost(id, email);
     return ResponseEntity.ok("Post deleted successfully");
   }
