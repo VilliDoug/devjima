@@ -81,8 +81,7 @@ public class PostService {
       post.setBody(body);
       post.setLanguage(language);
       post.setUpdatedAt(LocalDateTime.now());
-    }
-    else {
+    } else {
       throw new UnauthorizedException("Request unauthorized");
     }
     postRepository.save(post);
