@@ -26,7 +26,6 @@ public class AuthController {
     this.jwtUtil = jwtUtil;
   }
 
-//  TODO: profile completion handled via PUT /api/users/{id}
   @PostMapping("/register")
   public ResponseEntity<String> registerUser(
       @Valid @RequestBody RegisterRequestDTO request) {
