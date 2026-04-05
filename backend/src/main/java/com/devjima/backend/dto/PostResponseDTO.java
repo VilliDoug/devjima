@@ -8,6 +8,7 @@ public record PostResponseDTO(
     String title,
     String slug,
     String body,
+    String bodyHtml,
     String language,
     Boolean published,
     Integer viewCount,

@@ -7,10 +7,16 @@ import com.devjima.backend.model.Post;
 import com.devjima.backend.model.Tag;
 import com.devjima.backend.model.User;
 import java.util.List;
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DTOMapper {
+
+  private final Parser parser = Parser.builder().build();
+  private final HtmlRenderer renderer = HtmlRenderer.builder().build();
 
   public AuthorDTO toAuthorDTO(User author) {
     return new AuthorDTO(
@@ -26,11 +32,17 @@ public class DTOMapper {
         : null;
     List<TagDTO> tags = post.getTags().stream().map(this::toTagDTO).toList();
 
+//    CommonMark "flow" - parse the body into a Node
+    Node parsedBody = parser.parse(post.getBody());
+//    Render the Node into an HTML String
+    String bodyHtml = renderer.render(parsedBody);
+
     return new PostResponseDTO(
         post.getId(),
         post.getTitle(),
         post.getSlug(),
-        post.getBody(),
+        post.getBody(), // raw markdown
+        bodyHtml, // rendered html body
         post.getLanguage(),
         post.getPublished(),
         post.getViewCount(),
