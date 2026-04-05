@@ -3,6 +3,7 @@ package com.devjima.backend.config;
 import com.devjima.backend.filter.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -21,11 +22,12 @@ public class SecurityConfig {
     http
         .csrf(csrf -> csrf.disable()) //CSRF (Cross-Site Request Forgery)
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers(
-                "/api/auth/**",
-                "/api/posts/**",
-                "/api/tags").permitAll()
-            .anyRequest().authenticated()
+            .requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/tags").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/comments/post/**").permitAll()
+            .anyRequest()
+            .authenticated()
         )
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
