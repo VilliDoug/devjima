@@ -2,12 +2,15 @@ package com.devjima.backend.service;
 
 import com.devjima.backend.dto.PostResponseDTO;
 import com.devjima.backend.exception.ResourceNotFoundException;
+import com.devjima.backend.exception.UnauthorizedException;
 import com.devjima.backend.mapper.DTOMapper;
 import com.devjima.backend.model.Post;
 import com.devjima.backend.model.User;
 import com.devjima.backend.repository.PostRepository;
 import com.devjima.backend.repository.UserRepository;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -62,4 +65,34 @@ public class PostService {
         .map(dtoMapper::toPostResponseDTO)
         .toList();
   }
+
+  public PostResponseDTO updatePost(
+      Long postId, String title, String body,
+      String language, String currentUserEmail) {
+    Post post = postRepository.findById(postId)
+        .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
+    if (Objects.equals(post.getAuthor().getEmail(), currentUserEmail)) {
+      post.setTitle(title);
+      post.setSlug(title.toLowerCase().replace(" ", "-"));
+      post.setBody(body);
+      post.setLanguage(language);
+      post.setUpdatedAt(LocalDateTime.now());
+    }
+    else {
+      throw new UnauthorizedException("Request unauthorized");
+    }
+    postRepository.save(post);
+    return dtoMapper.toPostResponseDTO(post);
+  }
+
+  public void deletePost(
+      Long postId, String currentUserEmail) {
+    Post post = postRepository.findById(postId)
+        .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
+    if (!Objects.equals(post.getAuthor().getEmail(), currentUserEmail)) {
+      throw new UnauthorizedException("Request unauthorized");
+    }
+    postRepository.delete(post);
+  }
+
 }
