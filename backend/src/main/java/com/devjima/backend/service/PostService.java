@@ -8,6 +8,7 @@ import com.devjima.backend.model.Post;
 import com.devjima.backend.model.User;
 import com.devjima.backend.repository.PostRepository;
 import com.devjima.backend.repository.UserRepository;
+import com.devjima.backend.util.SlugUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -19,22 +20,24 @@ public class PostService {
   private final UserRepository userRepository;
   private final PostRepository postRepository;
   private final DTOMapper dtoMapper;
+  private final SlugUtil slugUtil;
 
   public PostService(
       UserRepository userRepository,
       PostRepository postRepository,
-      DTOMapper dtoMapper) {
+      DTOMapper dtoMapper,
+      SlugUtil slugUtil) {
     this.userRepository = userRepository;
     this.postRepository = postRepository;
     this.dtoMapper = dtoMapper;
+    this.slugUtil = slugUtil;
   }
 
   public Post createPost(String title, String body, String language, Long authorId) {
     User user = userRepository.findById(authorId)
         .orElseThrow(() -> new ResourceNotFoundException("Post author not found"));
 
-//    TODO: add regex to avoid having symbols in slug
-    String slug = title.toLowerCase().replace(" ", "-");
+    String slug = slugUtil.generateSlug(title);
     Post post = new Post();
     post.setAuthor(user);
     post.setTitle(title);
@@ -73,7 +76,7 @@ public class PostService {
         .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
     if (Objects.equals(post.getAuthor().getEmail(), currentUserEmail)) {
       post.setTitle(title);
-      post.setSlug(title.toLowerCase().replace(" ", "-"));
+      post.setSlug(slugUtil.generateSlug(title));
       post.setBody(body);
       post.setLanguage(language);
       post.setUpdatedAt(LocalDateTime.now());
