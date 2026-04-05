@@ -4,6 +4,7 @@ import com.devjima.backend.dto.AuthorDTO;
 import com.devjima.backend.dto.CommentResponseDTO;
 import com.devjima.backend.dto.PostResponseDTO;
 import com.devjima.backend.dto.TagDTO;
+import com.devjima.backend.dto.UserProfileDTO;
 import com.devjima.backend.model.Comment;
 import com.devjima.backend.model.Post;
 import com.devjima.backend.model.Tag;
@@ -82,6 +83,19 @@ public class DTOMapper {
         comment.getReplies().stream()
             .map(this::toCommentResponseDTO)
             .toList()
+    );
+  }
+
+  public UserProfileDTO toUserProfileDTO(User user) {
+    return new UserProfileDTO(
+        user.getId(),
+        user.getUsername(),
+        user.getDisplayName(),
+        user.getBio(),
+        user.getAvatarUrl(),
+        user.getPreferredLang(),
+        user.getRole(),
+        user.getCreatedAt()
     );
   }
 }

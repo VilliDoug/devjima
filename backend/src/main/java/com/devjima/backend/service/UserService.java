@@ -1,20 +1,27 @@
 package com.devjima.backend.service;
 
+import com.devjima.backend.dto.UserProfileDTO;
 import com.devjima.backend.exception.ResourceNotFoundException;
+import com.devjima.backend.exception.UnauthorizedException;
+import com.devjima.backend.mapper.DTOMapper;
 import com.devjima.backend.model.User;
 import com.devjima.backend.repository.UserRepository;
+import java.time.LocalDateTime;
+import java.util.Objects;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
   private UserRepository userRepository;
+  private DTOMapper dtoMapper;
   // Encoder will "Hash" the password before saving
   private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
   // Constructor injection was recommended for the repository
-  public UserService(UserRepository userRepository){
+  public UserService(UserRepository userRepository, DTOMapper dtoMapper){
     this.userRepository = userRepository;
+    this.dtoMapper = dtoMapper;
   }
 
   //  Register (POST) service method for a User - make separate DTO later!
@@ -45,6 +52,30 @@ public class UserService {
   public User findByEmail(String email) {
     return userRepository.findByEmail(email)
         .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+  }
+
+  public UserProfileDTO getUserProfile(Long id) {
+    User user = userRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    return dtoMapper.toUserProfileDTO(user);
+  }
+
+  public UserProfileDTO updateUserProfile(
+      Long id, String displayName, String bio,
+      String avatarUrl, String preferredLang, String currentUserEmail) {
+    User user = userRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    if (Objects.equals(user.getEmail(), currentUserEmail)) {
+      user.setDisplayName(displayName);
+      user.setBio(bio);
+      user.setAvatarUrl(avatarUrl);
+      user.setPreferredLang(preferredLang);
+      user.setUpdatedAt(LocalDateTime.now());
+    } else {
+      throw new UnauthorizedException("Request unauthorized");
+    }
+    userRepository.save(user);
+    return dtoMapper.toUserProfileDTO(user);
   }
 
 }
