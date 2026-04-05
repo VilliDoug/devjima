@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class PostService {
@@ -96,6 +97,38 @@ public class PostService {
       throw new UnauthorizedException("Request unauthorized");
     }
     postRepository.delete(post);
+  }
+
+  public List<PostResponseDTO> searchByTitle(String title) {
+    return postRepository.findByTitleContainingIgnoreCase(title)
+        .stream()
+        .map(dtoMapper::toPostResponseDTO)
+        .toList();
+  }
+
+  public List<PostResponseDTO> searchByLanguage(String language) {
+    return postRepository.findByLanguage(language)
+        .stream()
+        .map(dtoMapper::toPostResponseDTO)
+        .toList();
+  }
+
+  public List<PostResponseDTO> searchByTitleAndLanguage(String title, String language) {
+    return postRepository.findByTitleContainingIgnoreCaseAndLanguage(title, language)
+        .stream()
+        .map(dtoMapper::toPostResponseDTO)
+        .toList();
+  }
+
+  public List<PostResponseDTO> searchPosts(String title, String language) {
+    if (StringUtils.hasText(title) && StringUtils.hasText(language)) {
+      return searchByTitleAndLanguage(title, language);
+    } else if (StringUtils.hasText(title)) {
+      return searchByTitle(title);
+    } else if (StringUtils.hasText(language)) {
+      return searchByLanguage(language);
+    }
+    return getAllPosts();
   }
 
 }

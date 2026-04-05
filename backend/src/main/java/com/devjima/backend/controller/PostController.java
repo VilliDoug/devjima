@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -87,5 +88,13 @@ public class PostController {
         .getPrincipal();
     postService.deletePost(id, email);
     return ResponseEntity.ok("Post deleted successfully");
+  }
+
+  @GetMapping("/search")
+  public ResponseEntity<List<PostResponseDTO>> getSearchedPosts(
+      @RequestParam(required = false) String title,
+      @RequestParam(required = false) String language
+  ) {
+    return ResponseEntity.ok(postService.searchPosts(title, language));
   }
 }
