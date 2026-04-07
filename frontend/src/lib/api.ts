@@ -43,7 +43,7 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
 
 // Posts
 export const getPosts = () => request<Post[]>('/posts');
-export const getPostById = (id: number) => request<Post>(`/post/${id}`);
+export const getPostById = (id: number) => request<Post>(`/posts/${id}`);
 export const searchPosts = (title?: string, language?: string) => {
     const params = new URLSearchParams();
     if (title) params.append('title', title);
