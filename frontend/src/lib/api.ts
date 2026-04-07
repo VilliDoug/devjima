@@ -18,8 +18,16 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
             ...options?.headers,
         }
-    });
-
+    });    
+    if (!res.ok) {
+        throw new Error(`API error: ${res.status}`);
+    }
+    const contentType = res.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+        return await res.json();
+    }
+    return await res.text() as unknown as T;
+}
 // caller passed:
 // options = { method: 'POST', body: '{"email":"test@test.com"}' }
 
@@ -32,13 +40,6 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
 //         'Authorization': 'Bearer eyJ...'
 //     }
 // }
-    
-    if (!res.ok) {
-        throw new Error(`API error: ${res.status}`);
-    }
-
-    return res.text() as unknown as T;
-}
 
 // Posts
 export const getPosts = () => request<Post[]>('/posts');

@@ -1,37 +1,43 @@
-import { useAuth } from "@/lib/AuthContext";
-import Link from "next/link";
+'use client';
+import Link from 'next/link';
+import { useAuth } from '@/lib/AuthContext';
+import { useEffect, useState } from 'react';
 
 export default function Navbar() {
-    const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
+  const [mounted, setMounted] = useState(false);
 
-    return (
-        <nav className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-            <Link href="/" className="font-bold text-xl">
-            DevJima
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
+
+  return (
+    <nav className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+      <Link href="/" className="font-bold text-xl">
+        DevJima
+      </Link>
+      <div className="flex items-center gap-4">
+        {!mounted ? null : isLoggedIn ? (
+          <>
+            <Link href="/posts/new" className="text-sm text-gray-600 hover:text-black">
+              Write
             </Link>
-
-            <div className="flex items-center gap-4">
-                {isLoggedIn ? (
-                    <>
-                    <Link href="/posts/new" className="text-sm text-gray-600 hover:text-black">
-                    Write
-                    </Link>
-                    <button onClick={logout} className="text-sm text-gray-600 hover:text-black">
-                        Logout
-                    </button>
-                    </>
-                ) : (
-                    <>
-                    <Link href="/login" className="text-sm text-gray-600 hover:text-black">
-                    Login
-                    </Link>
-                    <Link href="/register"
-                    className="text-sm bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800">
-                        Sign up
-                    </Link>
-                    </>
-                )}
-            </div>
-        </nav>
-    )
+            <button onClick={logout} className="text-sm text-gray-600 hover:text-black">
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link href="/login" className="text-sm text-gray-600 hover:text-black">
+              Login
+            </Link>
+            <Link href="/register" className="text-sm bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800">
+              Sign up
+            </Link>
+          </>
+        )}
+      </div>
+    </nav>
+  );
 }

@@ -11,7 +11,7 @@ export default function LoginPage() {
     const {login: authLogin} = useAuth();
     const router = useRouter();
 
-    const handleSumbit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
         try {
             const token = await login(email, password);
@@ -26,7 +26,7 @@ export default function LoginPage() {
         <div className="max-w-md mx-auto mt-20 px-6">
             <h1 className="text-2xl font-bold mb-8">Login</h1>
             {error && <p className="text-red-500 mb-4">{error}</p> }
-            <form onSubmit={handleSumbit} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <input 
                 type="email"
                  placeholder="Email"

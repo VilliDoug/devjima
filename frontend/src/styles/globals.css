@@ -10,6 +10,14 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-devjima-teal: #2D7D6F;
+  --color-devjima-teal-hover: #1F5C52;
+  --color-devjima-bg: #F9F7F4;
+  --color-devjima-bg-dark: #1A1A1A;
+  --color-devjima-text: #2C2C2C;
+  --color-devjima-text-muted: #E8E6E3;
+  --color-devjima-surface: #EFEDE9;
+  --color-devjima-surface-dark: #2A2A2A;
 }
 
 @media (prefers-color-scheme: dark) {
