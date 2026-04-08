@@ -24,3 +24,14 @@ export interface Post {
     author: Author;
     tags: Tag[];
 }
+
+export interface User {
+  id: number;
+  username: string;
+  displayName: string | null;
+  bio: string | null;
+  avatarUrl: string | null;
+  preferredLang: string;
+  role: string;
+  createdAt: string;
+}
