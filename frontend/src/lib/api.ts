@@ -62,4 +62,10 @@ export const register = (username: string, email: string, password: string) =>
     request<string>('/auth/register', {
         method: 'POST',
         body: JSON.stringify({username, email, password}),
-    });    
+    });  
+    
+export const createPost = (title: string, body: string, language: string) =>
+    request<string>('/posts/new', {
+        method: 'POST',
+        body: JSON.stringify({ title, body, language }),
+    });
