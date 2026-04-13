@@ -1,3 +1,4 @@
+import Comments from "@/components/Comments";
 import { getPostById } from "@/lib/api";
 import { Post } from "@/types";
 import { useRouter } from "next/router";
@@ -56,6 +57,7 @@ export default function PostPage() {
 
         <div className="prose prose-invert max-w-none"
         dangerouslySetInnerHTML={{ __html: post.bodyHtml}}></div>
+        <Comments postId={post.id} />
     </main>
   );
 }

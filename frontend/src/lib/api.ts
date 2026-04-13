@@ -1,4 +1,4 @@
-import { Post } from "@/types";
+import { Post, PostComment } from "@/types";
 
 const API_BASE = 'http://localhost:8080/api';
 
@@ -43,13 +43,33 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
 
 // Posts
 export const getPosts = () => request<Post[]>('/posts');
+
 export const getPostById = (id: number) => request<Post>(`/posts/${id}`);
+
 export const searchPosts = (title?: string, language?: string) => {
     const params = new URLSearchParams();
     if (title) params.append('title', title);
     if (language) params.append('language', language);
     return request<Post[]>(`/posts/search?${params}`);
 };
+
+export const createPost = (title: string, body: string, language: string) =>
+    request<string>('/posts/new', {
+        method: 'POST',
+        body: JSON.stringify({ title, body, language }),
+    });
+
+// Comments
+export const getCommentsByPost = (postId: number) =>
+    request<PostComment[]>(`/comments/post/${postId}`);
+
+export const addComment = (postId: number, body: string, language: string) =>
+    request<PostComment[]>(`/comments/post/${postId}`, {
+        method: 'POST',
+        body: JSON.stringify({ body, language }),
+    });
+
+
 
 // Auth
 export const login = (email: string, password: string) =>
@@ -64,8 +84,3 @@ export const register = (username: string, email: string, password: string) =>
         body: JSON.stringify({username, email, password}),
     });  
     
-export const createPost = (title: string, body: string, language: string) =>
-    request<string>('/posts/new', {
-        method: 'POST',
-        body: JSON.stringify({ title, body, language }),
-    });

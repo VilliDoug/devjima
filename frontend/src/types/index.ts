@@ -35,3 +35,14 @@ export interface User {
   role: string;
   createdAt: string;
 }
+
+export interface PostComment {
+    id: number;
+    body: string;
+    bodyHtml: string;
+    language: string;
+    createdAt: string;
+    deleted: boolean;
+    author: Author;
+    replies: PostComment[];
+}
