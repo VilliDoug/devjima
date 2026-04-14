@@ -4,10 +4,12 @@ import Link from "next/link";
 export default function PostCard({ post }: { post: Post }) {
   return (
     <div className="border border-gray-700 rounded-xl p-6 hover:border-devjima-teal transition-colors cursor-pointer">
-      <div className="flex items-center gap-2 mb-3">
-        <span className="text-sm text-gray-400">
+      <div className="flex items-center gap-2 mb-3">        
+        <Link
+        href={`/profile/${post.author?.id}`}
+        className="text-sm text-gray-400 hover:text-devjima-teal transition-colors">
           {post.author?.displayName ?? post.author?.username}
-        </span>
+        </Link>
         <span className="text-gray-600">·</span>
         <span className="text-sm text-gray-500">
           {new Date(post.createdAt).toLocaleDateString()}

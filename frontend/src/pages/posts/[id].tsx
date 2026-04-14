@@ -1,6 +1,7 @@
 import Comments from "@/components/Comments";
 import { getPostById } from "@/lib/api";
 import { Post } from "@/types";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -26,9 +27,11 @@ export default function PostPage() {
   return (
     <main className="max-w-3xl mx-auto px-6 py-10">
         <div className="flex items-center gap-2 mb-6">
-            <span className="text-sm text-gray-400">
-                {post.author?.displayName ?? post.author?.username}
-            </span>
+            <Link
+        href={`/profile/${post.author?.id}`}
+        className="text-sm text-gray-400 hover:text-devjima-teal transition-colors">
+          {post.author?.displayName ?? post.author?.username}
+        </Link>
             <span className="text-gray-600">・</span>
             <span className="text-sm text-gray-500">
                 {new Date(post.createdAt).toLocaleDateString()}

@@ -1,4 +1,4 @@
-import { Post, PostComment } from "@/types";
+import { Post, PostComment, User } from "@/types";
 
 const API_BASE = 'http://localhost:8080/api';
 
@@ -69,6 +69,9 @@ export const addComment = (postId: number, body: string, language: string) =>
         body: JSON.stringify({ body, language }),
     });
 
+// User Profile
+export const getUserProfile = (id: number) =>
+    request<User>(`/users/${id}`); 
 
 
 // Auth
