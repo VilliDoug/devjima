@@ -54,6 +54,11 @@ export default function UserProfile() {
             <p className="text-gray-500 text-sm">
                 Member since {new Date(user.createdAt).toLocaleDateString()}
             </p>
+            <button type="button"
+            onClick={() => router.push(`/profile/${id}/edit`)}
+            className="mt-6 border border-gray-600 text-gray-400 px-4 py-2 rounded hover:border-devjima-teal hover:text-devjima-teal transition-colors text-sm">
+                Edit profile
+                </button>
         </div>        
     )
 }
