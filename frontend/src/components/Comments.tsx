@@ -1,6 +1,8 @@
 import { addComment, getCommentsByPost } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { PostComment } from "@/types";
+import { useAuth } from "@/lib/AuthContext";
+import Link from "next/link";
 
 export default function Comments({ postId }: { postId: number }) {
   const [comments, setComments] = useState<PostComment[]>([]);
@@ -8,6 +10,7 @@ export default function Comments({ postId }: { postId: number }) {
   const [newComment, setNewComment] = useState("");
   const [language, setLanguage] = useState("en");
   const [error, setError] = useState("");
+  const { isLoggedIn } = useAuth();
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
@@ -37,7 +40,8 @@ export default function Comments({ postId }: { postId: number }) {
         <h2 className="text-xl font-semibold mb-6">Comments</h2>
 
         {/* Comment form */}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3 mb-10">
+        {isLoggedIn ? (
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3 mb-10">
             <textarea
              placeholder="Write a comment in Markdown..."
             value={newComment}
@@ -77,6 +81,11 @@ export default function Comments({ postId }: { postId: number }) {
             </div>
             {error && <p className="text-red-500 text-sm">{error}</p>}
         </form>
+        ) : (
+             <p className="text-gray-500 text-sm mb-10">
+                <Link href="/login" className="underline text-devjima-teal">Login</Link> to join the conversation.
+            </p>
+        )}
 
         {/* Comments list */}
         {comments.length === 0 ? (
