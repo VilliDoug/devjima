@@ -73,6 +73,16 @@ export const addComment = (postId: number, body: string, language: string) =>
 export const getUserProfile = (id: number) =>
     request<User>(`/users/${id}`); 
 
+export const updateUserProfile = (id: number, data: {
+    displayName?: string;
+    bio?: string;
+    avatarUrl?: string;
+    preferredLang?: string;
+}) => request<User>(`/users/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+});
+
 
 // Auth
 export const login = (email: string, password: string) =>
