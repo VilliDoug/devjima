@@ -8,14 +8,15 @@ export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    
     const {login: authLogin} = useAuth();
     const router = useRouter();
 
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
         try {
-            const token = await login(email, password);
-            authLogin(token);
+            const { token, userId } = await login(email, password);
+            authLogin(token, userId);
             router.push('/');
         } catch {
             setError('Invalid email or password');

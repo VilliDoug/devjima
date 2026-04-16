@@ -46,3 +46,8 @@ export interface PostComment {
     author: Author;
     replies: PostComment[];
 }
+
+export interface LoginResponse {
+    token: string;
+    userId: number;
+}

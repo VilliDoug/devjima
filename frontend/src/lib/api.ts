@@ -1,4 +1,4 @@
-import { Post, PostComment, User } from "@/types";
+import { LoginResponse, Post, PostComment, User } from "@/types";
 
 const API_BASE = 'http://localhost:8080/api';
 
@@ -86,9 +86,9 @@ export const updateUserProfile = (id: number, data: {
 
 // Auth
 export const login = (email: string, password: string) =>
-    request<string>('/auth/login' , {
+    request<LoginResponse>('/auth/login' , {
         method: 'POST',
-        body: JSON.stringify({email, password}),
+        body: JSON.stringify({ email, password }),
     });
 
 export const register = (username: string, email: string, password: string) =>

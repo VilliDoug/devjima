@@ -1,7 +1,9 @@
 package com.devjima.backend.controller;
 
 import com.devjima.backend.dto.LoginRequestDTO;
+import com.devjima.backend.dto.LoginResponseDTO;
 import com.devjima.backend.dto.RegisterRequestDTO;
+import com.devjima.backend.model.User;
 import com.devjima.backend.service.UserService;
 import com.devjima.backend.util.JwtUtil;
 import jakarta.validation.Valid;
@@ -37,10 +39,10 @@ public class AuthController {
 //  Payload - the data
 //  Signature - proves it wasn't tampered with
   @PostMapping("/login")
-  public ResponseEntity<String> loginUser(
+  public ResponseEntity<LoginResponseDTO> loginUser(
       @Valid @RequestBody LoginRequestDTO request) {
-    userService.loginUser(request.email(), request.password());
+    User user = userService.loginUser(request.email(), request.password());
     String token = jwtUtil.generateToken(request.email());
-    return ResponseEntity.ok(token);
+    return ResponseEntity.ok(new LoginResponseDTO(token, user.getId()));
   }
 }
