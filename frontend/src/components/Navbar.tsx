@@ -4,7 +4,7 @@ import { useAuth } from '@/lib/AuthContext';
 import { useEffect, useState } from 'react';
 
 export default function Navbar() {
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, userId } = useAuth();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -26,6 +26,10 @@ export default function Navbar() {
             <button onClick={logout} className="text-sm text-gray-600 hover:text-black">
               Logout
             </button>
+            <Link href={`/profile/${userId}`}
+             className='text-sm text-gray-400 hover:text-white transition-colors' >
+              Profile
+             </Link>
           </>
         ) : (
           <>
