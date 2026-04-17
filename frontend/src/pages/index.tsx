@@ -66,11 +66,16 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-6">
+{posts.length === 0 ? (
+  <p className="text-gray-500 text-sm text-center py-12">No posts found. Try a different search!</p>
+) : (
+  <div className="flex flex-col gap-6">
         {posts.map(post => (
           <PostCard key={post.id} post={post} />
         ))}
       </div>
+)}
+      
     </main>
   )
 }
