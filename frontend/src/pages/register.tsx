@@ -1,4 +1,4 @@
-import { register } from "@/lib/api";
+import { login, register } from "@/lib/api";
 import { useAuth } from "@/lib/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -22,8 +22,9 @@ export default function RegisterUser() {
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     try {
-      const token = await register(username, email, password);
-      authLogin(token);
+      await register(username, email, password);
+      const { token, userId } = await login(email, password);
+      authLogin(token, userId);
       router.push('/')
     } catch {
       setError("Registration failed");
