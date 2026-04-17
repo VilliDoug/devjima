@@ -59,6 +59,19 @@ export const createPost = (title: string, body: string, language: string) =>
         body: JSON.stringify({ title, body, language }),
     });
 
+export const updatePost = (id: number, data: { title: string; body: string; language: string;}) =>
+    request<string>(`/posts/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+    });
+
+export const deletePost = (id: number) =>
+    request<string>(`/posts/${id}`, {
+        method: 'DELETE',
+    });
+
+
+
 // Comments
 export const getCommentsByPost = (postId: number) =>
     request<PostComment[]>(`/comments/post/${postId}`);

@@ -1,5 +1,6 @@
 import Comments from "@/components/Comments";
-import { getPostById } from "@/lib/api";
+import { deletePost, getPostById } from "@/lib/api";
+import { useAuth } from "@/lib/AuthContext";
 import { Post } from "@/types";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,9 +9,15 @@ import { useEffect, useState } from "react";
 export default function PostPage() {
   const router = useRouter();
   const id = Number(router.query.id);
+  const { userId } = useAuth();
 
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const handleDelete = async () => {
+    await deletePost(id);
+    router.push('/');
+  }
 
   useEffect(() => {
     if (!id) return;
@@ -19,6 +26,7 @@ export default function PostPage() {
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, [id]);
+
 
   if (loading) return <p className="p-6 text-devjima">Loading...</p>;
 
@@ -44,6 +52,20 @@ export default function PostPage() {
             }`}>
                 {post.language === 'en' ? 'EN' : 'JP'}
             </span>
+            {userId === post.author.id && (
+                <div className="flex gap-3 ml-auto">
+                    <button
+                    onClick={() => router.push(`/posts/${id}/edit`)}
+                    className="border border-gray-600 text-gray-400 px-3 py-1 rounded text-xs hover:border-devjima-teal hover:text-devjima-teal transition-colors">
+                        Edit
+                    </button>
+                    <button
+                    onClick={handleDelete}
+                    className="border border-red-800 text-red-400 px-3 py-1 rounded text-xs hover:bg-red-900 transition-colors">
+                        Delete
+                    </button>
+                </div>
+            )}
         </div>
 
         <h1 className="text-3xl font-bold text-white mb-4">{post.title}</h1>
