@@ -46,4 +46,9 @@ public class UserController {
     return ResponseEntity.ok(userService.getCountryCount());
   }
 
+  @GetMapping("/count")
+  public ResponseEntity<Long> getUserCount() {
+    return ResponseEntity.ok(userService.getUserCount());
+  }
+
 }

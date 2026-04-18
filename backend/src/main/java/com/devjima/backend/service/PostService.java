@@ -130,4 +130,8 @@ public class PostService {
     return getAllPosts();
   }
 
+  public Long getPostCount() {
+    return postRepository.count();
+  }
+
 }

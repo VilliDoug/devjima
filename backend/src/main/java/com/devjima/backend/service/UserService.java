@@ -83,6 +83,10 @@ public class UserService {
     return userRepository.countDistinctCountries();
   }
 
+  public Long getUserCount() {
+    return userRepository.count();
+  }
+
 }
 
 

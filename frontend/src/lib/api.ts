@@ -70,8 +70,6 @@ export const deletePost = (id: number) =>
         method: 'DELETE',
     });
 
-
-
 // Comments
 export const getCommentsByPost = (postId: number) =>
     request<PostComment[]>(`/comments/post/${postId}`);
@@ -110,3 +108,7 @@ export const register = (username: string, email: string, password: string) =>
         body: JSON.stringify({username, email, password}),
     });  
     
+// Count
+export const getPostCount = () => request<number>('/posts/count');
+export const getMemberCount = () => request<number>('/users/count');
+export const getCountryCount = () => request<number>('/users/countries/count');

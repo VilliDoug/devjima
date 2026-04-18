@@ -94,4 +94,9 @@ public class PostController {
   ) {
     return ResponseEntity.ok(postService.searchPosts(title, language));
   }
+
+  @GetMapping("/count")
+  public ResponseEntity<Long> getPostCount() {
+    return ResponseEntity.ok(postService.getPostCount());
+  }
 }
