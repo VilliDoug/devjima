@@ -37,8 +37,13 @@ public class UserController {
 
     return ResponseEntity.ok(userService.updateUserProfile(
         id, request.displayName(), request.bio(),
-        request.avatarUrl(), request.preferredLang(), email)
+        request.avatarUrl(), request.preferredLang(), request.country(), email)
     );
+  }
+
+  @GetMapping("/countries/count")
+  public ResponseEntity<Long> getCountryCount() {
+    return ResponseEntity.ok(userService.getCountryCount());
   }
 
 }

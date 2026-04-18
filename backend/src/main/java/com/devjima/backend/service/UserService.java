@@ -62,7 +62,7 @@ public class UserService {
 
   public UserProfileDTO updateUserProfile(
       Long id, String displayName, String bio,
-      String avatarUrl, String preferredLang, String currentUserEmail) {
+      String avatarUrl, String preferredLang, String country, String currentUserEmail) {
     User user = userRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     if (Objects.equals(user.getEmail(), currentUserEmail)) {
@@ -70,12 +70,17 @@ public class UserService {
       user.setBio(bio);
       user.setAvatarUrl(avatarUrl);
       user.setPreferredLang(preferredLang);
+      user.setCountry(country);
       user.setUpdatedAt(LocalDateTime.now());
     } else {
       throw new UnauthorizedException("Request unauthorized");
     }
     userRepository.save(user);
     return dtoMapper.toUserProfileDTO(user);
+  }
+
+  public Long getCountryCount() {
+    return userRepository.countDistinctCountries();
   }
 
 }

@@ -4,6 +4,7 @@ public record UpdateProfileRequestDTO(
     String displayName,
     String bio,
     String avatarUrl,
-    String preferredLang) {
+    String preferredLang,
+    String country) {
 
 }

@@ -15,7 +15,7 @@ export default function Navbar() {
   return (
     <nav className="border-b border-gray-800 px-6 py-4 flex items-center justify-between sticky top-0 z-10 backdrop-blur-sm bg-black/80">
       <Link href="/" className="font-bold text-xl tracking-tight" style={{fontFamily: 'JetBrains Mono'}}>
-        <span className="text-devjima-teal">Dev</span>Jima
+        {'<'}<span className="text-devjima-teal">Dev</span>{'>'}Jima
       </Link>
       <div className="flex items-center gap-4">
         {!mounted ? null : isLoggedIn ? (

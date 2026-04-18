@@ -40,6 +40,9 @@ public class User {
   @Column(name = "preferred_lang", length = 2)
   private String preferredLang = "en";
 
+  @Column(length = 100)
+  private String country;
+
   @Enumerated(EnumType.STRING)
   @Column(length = 20)
   private Role role = Role.USER;

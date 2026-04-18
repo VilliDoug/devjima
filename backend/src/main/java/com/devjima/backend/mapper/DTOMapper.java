@@ -94,6 +94,7 @@ public class DTOMapper {
         user.getBio(),
         user.getAvatarUrl(),
         user.getPreferredLang(),
+        user.getCountry(),
         user.getRole(),
         user.getCreatedAt()
     );

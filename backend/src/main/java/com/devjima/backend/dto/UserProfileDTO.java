@@ -10,6 +10,7 @@ public record UserProfileDTO(
     String bio,
     String avatarUrl,
     String preferredLang,
+    String country,
     Role role,
     LocalDateTime createdAt) {
 
