@@ -99,4 +99,11 @@ public class PostController {
   public ResponseEntity<Long> getPostCount() {
     return ResponseEntity.ok(postService.getPostCount());
   }
+
+  @GetMapping("/tag/{slug}")
+  public ResponseEntity<List<PostResponseDTO>> getPostsByTag(
+    @PathVariable String slug
+  ) {
+    return ResponseEntity.ok(postService.getPostsByTag(slug));
+  }
 }

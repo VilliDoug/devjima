@@ -134,4 +134,11 @@ public class PostService {
     return postRepository.count();
   }
 
+  public List<PostResponseDTO> getPostsByTag(String slug) {
+    return postRepository.findByTagsSlug(slug)
+    .stream()
+    .map(dtoMapper::toPostResponseDTO)
+    .toList();
+  }
+
 }

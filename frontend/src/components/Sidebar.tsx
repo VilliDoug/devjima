@@ -9,9 +9,18 @@ export default function Sidebar() {
   const router = useRouter();
   const { isLoggedIn } = useAuth();
 
-  const [tagsOpen, setTagsOpen] = useState(false);
+  const [tagsOpen, setTagsOpen] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem('tagsOpen') === 'true';
+  });
   const [mounted, setMounted] = useState(false);
   const [tags, setTags] = useState<Tag[]>([]);
+
+  const toggleTags = () => {
+    const next = !tagsOpen;
+    setTagsOpen(next);
+    localStorage.setItem('tagsOpen', String(next));
+  }
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
