@@ -1,4 +1,4 @@
-import { LoginResponse, Post, PostComment, User } from "@/types";
+import { LoginResponse, Post, PostComment, Tag, User } from "@/types";
 
 const API_BASE = 'http://localhost:8080/api';
 
@@ -53,6 +53,8 @@ export const searchPosts = (title?: string, language?: string) => {
     return request<Post[]>(`/posts/search?${params}`);
 };
 
+export const getPostsByAuthor = (userId: number) => request<Post[]>(`/posts/user/${userId}`)
+
 export const createPost = (title: string, body: string, language: string) =>
     request<string>('/posts/new', {
         method: 'POST',
@@ -93,6 +95,9 @@ export const updateUserProfile = (id: number, data: {
     method: 'PUT',
     body: JSON.stringify(data),
 });
+
+// Tags
+export const getAllTags = () => request<Tag[]>('/tags');
 
 
 // Auth

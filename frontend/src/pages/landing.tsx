@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getPostCount, getMemberCount, getCountryCount } from "@/lib/api";
+import { useAuth } from "@/lib/AuthContext";
+import router from "next/router";
 
 export default function Landing() {
   const [visible, setVisible] = useState(false);
@@ -8,6 +10,13 @@ export default function Landing() {
   const [postCount, setPostCount] = useState<number>(0);
   const [memberCount, setMemberCount] = useState<number>(0);
   const [countryCount, setCountryCount] = useState<number>(0);
+
+  const { isLoggedIn } = useAuth();
+
+  useEffect(() => {
+    if (isLoggedIn) router.push('/');
+  }, [isLoggedIn]);
+  
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,8 +68,8 @@ export default function Landing() {
             fontSize: "18px",
             fontWeight: 600,
           }}
-        >
-          <span style={{ color: "#2D7D6F" }}>&lt;Dev&gt;</span>Jima
+        >&lt;
+          <span style={{ color: "#2D7D6F" }}>Dev</span>&gt;Jima
         </span>
         <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
           <Link
