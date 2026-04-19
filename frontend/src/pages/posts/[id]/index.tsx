@@ -2,6 +2,7 @@ import Comments from "@/components/Comments";
 import { deletePost, getPostById } from "@/lib/api";
 import { useAuth } from "@/lib/AuthContext";
 import { Post } from "@/types";
+import hljs from "highlight.js";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -26,6 +27,14 @@ export default function PostPage() {
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, [id]);
+
+  useEffect(() => {
+    if (post) {
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightElement(block as HTMLElement);
+        })
+    }
+  }, [post]);
 
 
   if (loading) return <p className="p-6 text-devjima">Loading...</p>;
@@ -68,8 +77,6 @@ export default function PostPage() {
             )}
         </div>
 
-        <h1 className="text-3xl font-bold text-white mb-4">{post.title}</h1>
-
         {post.tags.length > 0 && (
             <div className="flex gap-2 mb-8 flex-wrap">
                 {post.tags.map(tag => (
@@ -80,8 +87,12 @@ export default function PostPage() {
             </div>
         )}
 
+        <hr style={{ border: 'none', borderTop: '1px solid #1a1a1a', margin: '24px 0' }} />
+
         <div className="prose prose-invert max-w-none"
         dangerouslySetInnerHTML={{ __html: post.bodyHtml}}></div>
+
+        <hr style={{ border: 'none', borderTop: '1px solid #1a1a1a', margin: '40px 0 24px' }} />
         <Comments postId={post.id} />
     </main>
   );
