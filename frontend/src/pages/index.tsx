@@ -33,7 +33,7 @@ export default function Home() {
   if (loading) return <p className="p-6 text-devjima">Loading...</p>;
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "#0a0a0a" }}>
+    <div style={{ display: "flex", minHeight: "100vh" }}>
       {/* Left Sidebar */}
       <Sidebar />
 

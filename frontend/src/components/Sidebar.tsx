@@ -25,7 +25,7 @@ export default function Sidebar() {
     <aside style={{
         width: '240px', minHeight: '100vh', borderRight: '1px solid #1a1a1a',
         padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '8px',
-        background: '#0a0a0a', position: 'sticky', top: '0', height: '100vh'
+        background: '#0d0d0d', position: 'sticky', top: '0', height: '100vh'
     }} />
 );
 
@@ -33,7 +33,7 @@ return (
     <aside style={{
         width: '240px', minHeight: '100vh', borderRight: '1px solid #1a1a1a',
         padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '4px',
-        background: '#0a0a0a', position: 'sticky', top: '0', height: '100vh',
+        background: '##0d0d0d', position: 'sticky', top: '0', height: '100vh',
         overflowY: 'auto'
     }}>
         

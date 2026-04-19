@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { AuthProvider } from "@/lib/AuthContext";
 import "@/styles/globals.css";
@@ -10,8 +11,13 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <AuthProvider>
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
       {!hiddenNavbar.includes(router.pathname) && <Navbar />}
-      <Component {...pageProps} />
+      <div style= {{ flex: 1 }}>
+        <Component {...pageProps} />
+      </div>      
+      <Footer />
+      </div>
     </AuthProvider>
   )
 }
