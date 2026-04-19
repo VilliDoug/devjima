@@ -4,7 +4,7 @@ import { useAuth } from '@/lib/AuthContext';
 import { useEffect, useState } from 'react';
 
 export default function Navbar() {
-  const { isLoggedIn, logout, userId } = useAuth();
+  const { isLoggedIn, logout, userId, username } = useAuth();
   const [mounted, setMounted] = useState(false);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -48,7 +48,7 @@ export default function Navbar() {
           display: 'flex', alignItems: 'center', justifyContent: 'center'
         }}
       >
-        👤
+        {(username ?? '?')[0].toUpperCase()}
       </button>
 
       {dropdownOpen && (

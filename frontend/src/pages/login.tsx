@@ -15,8 +15,8 @@ export default function LoginPage() {
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
         try {
-            const { token, userId } = await login(email, password);
-            authLogin(token, userId);
+            const { token, userId, username } = await login(email, password);
+            authLogin(token, userId, username);
             router.push('/');
         } catch {
             setError('Invalid email or password');

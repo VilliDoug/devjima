@@ -43,6 +43,6 @@ public class AuthController {
       @Valid @RequestBody LoginRequestDTO request) {
     User user = userService.loginUser(request.email(), request.password());
     String token = jwtUtil.generateToken(request.email());
-    return ResponseEntity.ok(new LoginResponseDTO(token, user.getId()));
+    return ResponseEntity.ok(new LoginResponseDTO(token, user.getId(), user.getUsername()));
   }
 }
