@@ -49,7 +49,7 @@ export default function Home() {
   if (loading) return <p className="p-6">Loading...</p>;
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh" }}>
+    <div style={{ display: "flex", height: "calc(100vh - 52px)", overflow: 'hidden' }}>
       <Sidebar />
 
       <main
@@ -58,6 +58,8 @@ export default function Home() {
           minWidth: 0,
           padding: "32px 24px",
           borderRight: "1px solid #1a1a1a",
+          overflowY: 'auto',
+          height: 'calc(100vh - 52px)'
         }}
       >
         {/* Search and filter */}
@@ -165,9 +167,7 @@ export default function Home() {
           width: "300px",
           flexShrink: 0,
           padding: "32px 20px",
-          position: "sticky",
-          top: 0,
-          height: "100vh",
+          height: "calc(100vh - 52px)",
           overflowY: "auto",
           background: "#0d0d0d",
           borderLeft: "1px solid #1a1a1a",

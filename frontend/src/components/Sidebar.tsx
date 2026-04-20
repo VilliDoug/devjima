@@ -44,7 +44,7 @@ export default function Sidebar() {
           background: "#0d0d0d",
           position: "sticky",
           top: "0",
-          height: "100vh",
+          height: "calc(100vh - 52px)",
         }}
       />
     );
@@ -62,7 +62,7 @@ export default function Sidebar() {
         background: "#0d0d0d",
         position: "sticky",
         top: "0",
-        height: "100vh",
+        height: "calc(100vh - 52px)",
         overflowY: "auto",
       }}
     >

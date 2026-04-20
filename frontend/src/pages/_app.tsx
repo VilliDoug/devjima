@@ -11,9 +11,9 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <AuthProvider>
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100vh'}}>
       {!hiddenNavbar.includes(router.pathname) && <Navbar />}
-      <div style= {{ flex: 1 }}>
+      <div style= {{ flex: 1, overflow: 'hidden' }}>
         <Component {...pageProps} />
       </div>      
       <Footer />
