@@ -23,8 +23,8 @@ export default function RegisterUser() {
     e.preventDefault();
     try {
       await register(username, email, password);
-      const { token, userId } = await login(email, password);
-      authLogin(token, userId);
+      const { token, userId} = await login(email, password);
+      authLogin(token, userId, username);
       router.push('/')
     } catch {
       setError("Registration failed");
