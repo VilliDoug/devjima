@@ -17,6 +17,12 @@ export default function UpdateUserProfile() {
     const [avatarUrl, setAvatarUrl] = useState('');
     const [preferredLang, setPreferredLang] = useState('en');
     const [error, setError] = useState('');
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        setMounted(true);
+    })
 
     useEffect(() => {
         if (!id) return;
@@ -31,6 +37,8 @@ export default function UpdateUserProfile() {
         .catch((err) => console.error(err))
         .finally(() => setLoading(false));
     }, [id]);
+
+    if (!mounted) return null;
     
     if (!isLoggedIn) {
         router.push('/login');
