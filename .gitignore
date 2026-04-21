@@ -19,6 +19,7 @@ out/
 # Secrets
 application-local.properties
 application-secrets.properties
+application-prod.properties
 *.env
 
 # ===== Next.js / Node =====
