@@ -13,6 +13,12 @@ export default function EditPost() {
   const [language, setLanguage] = useState("en");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -35,6 +41,8 @@ export default function EditPost() {
       setError("Failed to update post");
     }
   };
+
+  if (!mounted) return null;
 
   if (!isLoggedIn) {
     router.push(`/posts/${id}`);
