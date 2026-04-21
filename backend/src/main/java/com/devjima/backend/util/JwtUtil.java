@@ -5,6 +5,7 @@ import io.jsonwebtoken.io.Decoders;
 import javax.crypto.SecretKey;
 import io.jsonwebtoken.security.Keys;
 import java.util.Date;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,10 +13,12 @@ public class JwtUtil {
 
     private final long EXPIRATION_MS = 86400000;
 
-    private final SecretKey key = Keys.hmacShaKeyFor(
-        Decoders.BASE64.decode("devjimasecretkey256bitsdevjimasecretkey256bits"
-        )
-    );
+    @Value("${jwt.secret}")
+    private String secret;
+
+    private SecretKey key () {
+      return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+    }
 
 // Build a JWT with the user's email baked in, signed with your secret key, expires in 24 hours
   public String generateToken(String email) {
@@ -23,14 +26,14 @@ public class JwtUtil {
         .subject(email) // store email inside the token
         .issuedAt(new Date()) // when was it created
         .expiration(new Date(System.currentTimeMillis() + EXPIRATION_MS)) // when it expires (24h)
-        .signWith(key) // "stamp" it with secret key
+        .signWith(key()) // "stamp" it with secret key
         .compact(); // convert to xxx.yyy.zzz string
   }
 
 //  Cracks open a token and reads the email from it
   public String extractEmail(String token) {
     return Jwts.parser()
-        .verifyWith(key) // verify "stamp"
+        .verifyWith(key()) // verify "stamp"
         .build()
         .parseSignedClaims(token) // open string
         .getPayload() // read contents
