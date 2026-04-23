@@ -42,9 +42,23 @@ export default function PostPage() {
   if (!post) return <p className="p-6 text-gray-400">Post not found.</p>;
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh" }}>
+    
+    <div style={{ display: "flex", minHeight: "100vh" }}>        
       <Sidebar />
       <main className="max-w-3xl mx-auto px-6 py-10">
+        <button
+        onClick={() => router.back()}
+        style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: '#555', fontSize: '14px', display: 'flex',
+            alignItems: 'center', gap: '6px', padding: '0',
+            marginBottom: '10px'
+        }}
+        onMouseEnter={e => (e.currentTarget).style.color = '#2D7D6F'}
+        onMouseLeave={e => (e.currentTarget).style.color = '#555'}
+    >
+        ← Back
+    </button>
         <div className="flex items-center gap-2 mb-6">
           <Link
             href={`/profile/${post.author?.id}`}
