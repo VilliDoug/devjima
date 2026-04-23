@@ -8,15 +8,19 @@ import { useRouter } from "next/router";
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const hiddenNavbar = ['/landing'];
+  const feedPages = ['/'];
 
   return (
     <AuthProvider>
       <div style={{ display: 'flex', flexDirection: 'column', height: '100vh'}}>
       {!hiddenNavbar.includes(router.pathname) && <Navbar />}
-      <div style= {{ flex: 1, overflow: 'hidden' }}>
+      <div style= {{
+        flex: 1,
+        overflow: feedPages.includes(router.pathname) ? 'hidden' : 'auto'
+        }}>
         <Component {...pageProps} />
       </div>      
-      <Footer />
+      {!hiddenNavbar.includes(router.pathname) && <Footer />}
       </div>
     </AuthProvider>
   )

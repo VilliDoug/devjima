@@ -90,7 +90,7 @@ public class PostController {
     String email = authUtil.getCurrentUserEmail();
 
     postService.deletePost(id, email);
-    return ResponseEntity.ok("Post deleted successfully");
+    return ResponseEntity.noContent().build();
   }
 
   @GetMapping("/search")

@@ -2,6 +2,7 @@ package com.devjima.backend.service;
 
 import com.devjima.backend.dto.CommentResponseDTO;
 import com.devjima.backend.exception.ResourceNotFoundException;
+import com.devjima.backend.exception.UnauthorizedException;
 import com.devjima.backend.mapper.DTOMapper;
 import com.devjima.backend.model.Comment;
 import com.devjima.backend.model.Post;
@@ -77,4 +78,16 @@ public class CommentService {
         .toList();
   }
 
+  public void deleteComment(Long commentId, String currentUserEmail) {
+    Comment comment = commentRepository.findById(commentId)
+        .orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
+    User currentUser = userRepository.findByEmail(currentUserEmail)
+        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+    if (!comment.getAuthor().getId().equals(currentUser.getId())) {
+      throw new UnauthorizedException("Not authorized to delete this comment");
+    }
+    comment.setDeleted(true);
+    commentRepository.save(comment);
+  }
 }

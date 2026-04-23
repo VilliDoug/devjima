@@ -86,6 +86,9 @@ export const addComment = (postId: number, body: string, language: string) =>
         body: JSON.stringify({ body, language }),
     });
 
+export const deleteComment = (id: number) =>
+    request<void>(`/comments/${id}`, { method: 'DELETE' });
+
 // User Profile
 export const getUserProfile = (id: number) =>
     request<User>(`/users/${id}`); 

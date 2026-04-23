@@ -133,6 +133,16 @@ export default function PostPage() {
         />
         <Comments postId={post.id} />
       </main>
+      <aside style={{
+            width: '300px', flexShrink: 0, padding: '32px 20px',
+            height: '100%', overflowY: 'auto',
+            background: '#0d0d0d', borderLeft: '1px solid #1a1a1a'
+        }}>
+            <p style={{ fontSize: '11px', color: '#333', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>
+                Your recent posts
+            </p>
+            {/* we can add recent posts here later */}
+        </aside>
     </div>
   );
 }
