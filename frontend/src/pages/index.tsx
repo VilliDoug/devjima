@@ -55,7 +55,7 @@ export default function Home() {
         style={{
           flex: "1 1 0",
           minWidth: 0,
-          padding: "32px 24px",
+          padding: "32px 24px 100px",
           borderRight: "1px solid #1a1a1a",
           overflowY: 'auto',
           height: 'calc(100vh - 52px)'
