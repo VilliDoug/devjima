@@ -63,6 +63,12 @@ public class PostController {
     return ResponseEntity.ok(posts);
   }
 
+  @GetMapping("/recent")
+  public ResponseEntity<List<PostResponseDTO>> getPostsSortedByRecent() {
+    List<PostResponseDTO> posts = postService.getPostsSortedByRecent();
+    return ResponseEntity.ok(posts);
+  }
+
   @PutMapping("/{id}")
   public ResponseEntity<PostResponseDTO> updatePost(
       @PathVariable Long id,

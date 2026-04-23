@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getPostsByAuthor, getPostsByTag, searchPosts } from "@/lib/api";
+import { getPostsByAuthor, getPostsByTag, getRecentPosts, searchPosts } from "@/lib/api";
 import { Post } from "@/types";
 import PostCard from "@/components/PostCard";
 import Sidebar from "@/components/Sidebar";
@@ -18,13 +18,24 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [language, setLanguage] = useState("");
 
-  // Search posts when query or language changes
   useEffect(() => {
-    searchPosts(query, language)
-      .then((data) => setPosts(data))
-      .catch((err) => console.error(err))
+    if (tagParam) {
+      getPostsByTag(tagParam)
+      .then(data => setPosts(data))
+      .catch(err => console.error(err))
       .finally(() => setLoading(false));
-  }, [query, language]);
+    } else if (!query && !language) {
+      getRecentPosts()
+      .then(data => setPosts(data))
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false)); 
+    } else {
+      searchPosts(query, language)
+      .then(data => setPosts(data))
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false))
+    }
+  }, [query, language, tagParam]);
 
   // Fetch user's recent posts
   useEffect(() => {
@@ -33,18 +44,6 @@ export default function Home() {
       .then((data) => setUserPosts(data.slice(0, 5)))
       .catch((err) => console.error(err));
   }, [userId]);
-
-  // Apply tag from URL
-  useEffect(() => {
-    if (tagParam) {
-      getPostsByTag(tagParam)
-        .then((data) => setPosts(data))
-        .catch((err) => console.error(err));
-    } else {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      setQuery("");
-    }
-  }, [tagParam]);
 
   if (loading) return <p className="p-6">Loading...</p>;
 

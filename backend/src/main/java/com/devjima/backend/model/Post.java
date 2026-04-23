@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -45,8 +46,9 @@ public class Post {
   private Boolean published = true;
   private Integer viewCount = 0;
 
-  @Column(name = "created_at")
-  private LocalDateTime createdAt = LocalDateTime.now();
+  @CreationTimestamp
+  @Column(name = "created_at", updatable = false)
+  private LocalDateTime createdAt;
 
   @Column(name = "updated_at")
   private LocalDateTime updatedAt = LocalDateTime.now();

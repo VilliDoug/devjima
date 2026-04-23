@@ -70,6 +70,14 @@ public class PostService {
         .toList();
   }
 
+  public List<PostResponseDTO> getPostsSortedByRecent() {
+    List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc();
+    return posts.stream()
+        .map(dtoMapper::toPostResponseDTO)
+        .toList();
+  };
+
+
   public PostResponseDTO updatePost(
       Long postId, String title, String body,
       String language, String currentUserEmail) {
@@ -140,5 +148,7 @@ public class PostService {
     .map(dtoMapper::toPostResponseDTO)
     .toList();
   }
+
+
 
 }

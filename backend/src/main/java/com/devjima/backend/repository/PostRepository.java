@@ -14,5 +14,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
   List<Post> findByTitleContainingIgnoreCase(String title);
   List<Post> findByTitleContainingIgnoreCaseAndLanguage(String title, String language);
   List<Post> findByTagsSlug(String slug);
+  List<Post> findAllByOrderByCreatedAtDesc();
 
 }

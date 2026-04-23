@@ -57,6 +57,8 @@ export const getPostsByAuthor = (userId: number) => request<Post[]>(`/posts/user
 
 export const getPostsByTag = (slug: string) => request<Post[]>(`/posts/tag/${slug}`);
 
+export const getRecentPosts = () => request<Post[]>('/posts/recent')
+
 export const createPost = (title: string, body: string, language: string) =>
     request<string>('/posts/new', {
         method: 'POST',
