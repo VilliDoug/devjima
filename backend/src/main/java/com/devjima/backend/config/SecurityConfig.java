@@ -34,6 +34,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET, "/api/tags").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/comments/post/**").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/translate").permitAll()
             .anyRequest()
             .authenticated()
         )

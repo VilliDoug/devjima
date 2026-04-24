@@ -1,3 +1,4 @@
+import { API_BASE } from "@/lib/api";
 import { useState } from "react";
 
 export function useTranslation() {
@@ -11,8 +12,7 @@ export function useTranslation() {
     }
     setTranslating(true);
     try {
-      const targetLang = sourceLang === "ja" ? "EN" : "JA";
-      const response = await fetch("/api/translate", {
+      const response = await fetch(`${API_BASE}/translate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
