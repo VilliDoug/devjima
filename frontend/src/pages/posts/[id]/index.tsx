@@ -1,5 +1,6 @@
 import Comments from "@/components/Comments";
 import Sidebar from "@/components/Sidebar";
+import { useTranslation } from "@/hooks/useTranslation";
 import { deletePost, getPostById } from "@/lib/api";
 import { useAuth } from "@/lib/AuthContext";
 import { Post } from "@/types";
@@ -12,6 +13,7 @@ export default function PostPage() {
   const router = useRouter();
   const id = Number(router.query.id);
   const { userId } = useAuth();
+  const { translatedHtml, translating, translate } = useTranslation();
 
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -45,7 +47,16 @@ export default function PostPage() {
     
     <div style={{ display: "flex", minHeight: "100vh" }}>        
       <Sidebar />
-      <main className="max-w-3xl mx-auto px-6 py-10">
+      <main style={{ 
+    flex: '1 1 0', 
+    minWidth: 0, 
+    width: '100%',
+    maxWidth: '900px',
+    padding: '32px 40px', 
+    overflowY: 'auto', 
+    height: '100%',
+    margin: '0 auto'
+}}>
         <button
         onClick={() => router.back()}
         style={{
@@ -80,22 +91,44 @@ export default function PostPage() {
           >
             {post.language === "en" ? "EN" : "JP"}
           </span>
-          {userId === post.author.id && (
+          
+          
             <div className="flex gap-3 ml-auto">
               <button
+        onClick={() => translate(post.bodyHtml, post.language)}
+        style={{
+            background: 'none',
+            border: '1px solid #2a2a2a',
+            borderRadius: '6px',
+            padding: '4px 12px',
+            color: translatedHtml ? '#2D7D6F' : '#555',
+            fontSize: '12px',
+            cursor: 'pointer',
+            transition: 'all 0.15s ease'
+        }}
+        onMouseEnter={e => (e.currentTarget).style.borderColor = '#2D7D6F'}
+        onMouseLeave={e => (e.currentTarget).style.borderColor = '#2a2a2a'}
+    >
+        {translating ? 'Translating...' 
+        : translatedHtml ? '← Original' 
+        : post.language === 'ja' ? '🌐 → English' 
+        : '🌐 → 日本語'}
+    </button>
+              {userId === post.author.id && (
+              <><button
                 onClick={() => router.push(`/posts/${id}/edit`)}
                 className="border border-gray-600 text-gray-400 px-3 py-1 rounded text-xs hover:border-devjima-teal hover:text-devjima-teal transition-colors"
               >
                 Edit
-              </button>
-              <button
+              </button><button
                 onClick={handleDelete}
                 className="border border-red-800 text-red-400 px-3 py-1 rounded text-xs hover:bg-red-900 transition-colors"
               >
-                Delete
-              </button>
+                  Delete
+                </button></>
+              )}
             </div>
-          )}
+          
         </div>
 
         {post.tags.length > 0 && (
@@ -121,7 +154,7 @@ export default function PostPage() {
 
         <div
           className="prose prose-invert max-w-none"
-          dangerouslySetInnerHTML={{ __html: post.bodyHtml }}
+          dangerouslySetInnerHTML={{ __html: translatedHtml ?? post.bodyHtml }}
         ></div>
 
         <hr
