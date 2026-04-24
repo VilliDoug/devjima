@@ -10,9 +10,12 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
@@ -57,9 +60,10 @@ public class Post {
   @JoinTable(
       name = "post_tags",
       joinColumns = @JoinColumn(name = "post_id"),
-      inverseJoinColumns = @JoinColumn(name = "tag_id")
+      inverseJoinColumns = @JoinColumn(name = "tag_id"),
+      uniqueConstraints = @UniqueConstraint(columnNames = {"post_id", "tag_id"})
   )
   @OnDelete(action = OnDeleteAction.CASCADE)
-  private List<Tag> tags = new ArrayList<>();
+  private Set<Tag> tags = new HashSet<>();
 
 }

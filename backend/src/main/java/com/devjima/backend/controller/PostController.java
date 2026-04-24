@@ -35,12 +35,13 @@ public class PostController {
   }
 
   @PostMapping("/new")
-  public ResponseEntity<String> createPost(
+  public ResponseEntity<PostResponseDTO> createPost(
       @RequestBody CreatePostRequestDTO request) {
     User user = authUtil.getCurrentUser();
 
-    postService.createPost(request.title(), request.body(), request.language(), user.getId());
-    return ResponseEntity.status(HttpStatus.CREATED).body("Post created successfully");
+    PostResponseDTO post = postService.createPost(
+        request.title(), request.body(), request.language(), user.getId());
+    return ResponseEntity.status(HttpStatus.CREATED).body(post);
   }
 
   @GetMapping

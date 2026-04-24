@@ -31,6 +31,7 @@ export default function PostPage() {
       .finally(() => setLoading(false));
   }, [id]);
 
+  // TODO : fix highlight per post / per load
   useEffect(() => {
     if (post) {
       document.querySelectorAll("pre code").forEach((block) => {

@@ -199,7 +199,7 @@ export default function Sidebar() {
       </div>      
 
       {/* Spacer */}
-      <div style={{ flex: 1 }} />
+      <div style={{ flex: 0.9 }} />
 
       {/* Write post */}
       {isLoggedIn && (
@@ -216,7 +216,7 @@ export default function Sidebar() {
             fontSize: "14px",
             fontWeight: 500,
             transition: "background 0.2s ease",
-            marginTop: "8px",
+            marginBottom: "36px"
           }}
           onMouseEnter={(e) =>
             ((e.currentTarget as HTMLElement).style.background = "#1F5C52")

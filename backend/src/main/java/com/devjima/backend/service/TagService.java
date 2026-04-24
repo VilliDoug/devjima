@@ -39,9 +39,21 @@ public class TagService {
         .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
     Tag tag = tagRepository.findById(tagId)
         .orElseThrow(() -> new ResourceNotFoundException("Tag not found"));
-    post.getTags().add(tag);
-    postRepository.save(post);
+
+    if (!post.getTags().contains(tag)) {
+      post.getTags().add(tag);
+      postRepository.save(post);
+    }
     return dtoMapper.toPostResponseDTO(post);
+  }
+
+  public void deleteTagFromPost(Long tagId, Long postId) {
+    Post post = postRepository.findById(postId)
+        .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
+    Tag tag = tagRepository.findById(tagId)
+        .orElseThrow(() -> new ResourceNotFoundException("Tag not found"));
+    post.getTags().remove(tag);
+    postRepository.save(post);
   }
 
 }

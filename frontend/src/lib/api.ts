@@ -60,7 +60,7 @@ export const getPostsByTag = (slug: string) => request<Post[]>(`/posts/tag/${slu
 export const getRecentPosts = () => request<Post[]>('/posts/recent')
 
 export const createPost = (title: string, body: string, language: string) =>
-    request<string>('/posts/new', {
+    request<Post>('/posts/new', {
         method: 'POST',
         body: JSON.stringify({ title, body, language }),
     });
@@ -106,6 +106,14 @@ export const updateUserProfile = (id: number, data: {
 // Tags
 export const getAllTags = () => request<Tag[]>('/tags');
 
+export const removeTagFromPost = (tagId: number, postId: number) =>
+     request<void>(`/tags/${tagId}/posts/${postId}`,
+     { method: 'DELETE' });
+
+export const addTagToPost = (tagId: number, postId: number) =>
+    request<void>(`/tags/${tagId}/posts/${postId}`,
+    { method: 'POST'});
+     
 
 // Auth
 export const login = (email: string, password: string) =>

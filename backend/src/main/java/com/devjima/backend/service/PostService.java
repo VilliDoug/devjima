@@ -34,7 +34,7 @@ public class PostService {
     this.slugUtil = slugUtil;
   }
 
-  public Post createPost(String title, String body, String language, Long authorId) {
+  public PostResponseDTO createPost(String title, String body, String language, Long authorId) {
     User user = userRepository.findById(authorId)
         .orElseThrow(() -> new ResourceNotFoundException("Post author not found"));
 
@@ -45,7 +45,8 @@ public class PostService {
     post.setBody(body);
     post.setLanguage(language);
     post.setSlug(slug);
-    return postRepository.save(post);
+    Post savedPost = postRepository.save(post);
+    return dtoMapper.toPostResponseDTO(savedPost);
   }
 
   public List<PostResponseDTO> getAllPosts() {
