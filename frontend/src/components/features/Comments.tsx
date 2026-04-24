@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { PostComment } from "@/types";
 import { useAuth } from "@/lib/AuthContext";
 import Link from "next/link";
+import LanguageToggle from "../ui/LanguageToggle";
+import DeleteButton from "../ui/DeleteButton";
 
 export default function Comments({ postId }: { postId: number }) {
   const [comments, setComments] = useState<PostComment[]>([]);
@@ -27,9 +29,9 @@ export default function Comments({ postId }: { postId: number }) {
 
   const fetchComments = () => {
     getCommentsByPost(postId)
-    .then(data => setComments(data))
-    .catch(err => console.error(err))
-    .finally(() => setLoading(false));
+      .then((data) => setComments(data))
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
@@ -55,30 +57,11 @@ export default function Comments({ postId }: { postId: number }) {
             className="border border-gray-600 bg-transparent rounded px-4 py-2 font-mono text-sm resize-none"
           />
           <div className="flex items-center gap-4">
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => setLanguage("en")}
-                className={`px-3 py-1 rounded-full text-xs border transition-colors ${
-                  language === "en"
-                    ? "bg-devjima-teal text-white border-devjima-teal"
-                    : "border-gray-600 text-gray-400"
-                }`}
-              >
-                EN
-              </button>
-              <button
-                type="button"
-                onClick={() => setLanguage("ja")}
-                className={`px-3 py-1 rounded-full text-xs border transition-colors ${
-                  language === "ja"
-                    ? "bg-devjima-teal text-white border-devjima-teal"
-                    : "border-gray-600 text-gray-400"
-                }`}
-              >
-                JP
-              </button>
-            </div>
+            <LanguageToggle
+              language={language}
+              onChange={setLanguage}
+              size="xs"
+            />
             <button
               type="submit"
               className="bg-devjima-teal text-white px-5 py-1.5 rounded text-sm hover:bg-devjima-teal-hover transition-colors"
@@ -147,15 +130,8 @@ export default function Comments({ postId }: { postId: number }) {
                         }}
                       />
                       {userId === comment.author?.id && !comment.deleted && (
-    <button
-        onClick={() => deleteComment(comment.id).then(fetchComments)}
-        style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#555', fontSize: '12px', marginTop: '4px' }}
-        onMouseEnter={e => (e.currentTarget).style.color = '#D4537E'}
-        onMouseLeave={e => (e.currentTarget).style.color = '#555'}
-    >
-        Delete
-    </button>
-)}
+                        <DeleteButton onDelete={() => deleteComment(comment.id).then(fetchComments)} />
+                      )}
                     </div>
                   ))}
                 </div>

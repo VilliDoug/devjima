@@ -1,5 +1,14 @@
-import BackButton from "@/components/BackButton";
-import { getPostById, updatePost, getAllTags, addTagToPost, removeTagFromPost } from "@/lib/api";
+import BackButton from "@/components/ui/BackButton";
+import LanguageToggle from "@/components/ui/LanguageToggle";
+import SaveCancelButtons from "@/components/ui/SaveCancelButtons";
+import TagPicker from "@/components/ui/TagPicker";
+import {
+  getPostById,
+  updatePost,
+  getAllTags,
+  addTagToPost,
+  removeTagFromPost,
+} from "@/lib/api";
 import { useAuth } from "@/lib/AuthContext";
 import { Tag } from "@/types";
 import { useRouter } from "next/router";
@@ -26,9 +35,7 @@ export default function EditPost() {
   }, []);
 
   useEffect(() => {
-    getAllTags()
-    .then(setAllTags)
-    .catch(console.error);
+    getAllTags().then(setAllTags).catch(console.error);
   }, []);
 
   useEffect(() => {
@@ -47,8 +54,10 @@ export default function EditPost() {
   }, [id]);
 
   const toggleTag = (tagId: number) => {
-    setSelectedTags(prev =>
-      prev.includes(tagId) ? prev.filter(tag => tag !== tagId) : [...prev, tagId]
+    setSelectedTags((prev) =>
+      prev.includes(tagId)
+        ? prev.filter((tag) => tag !== tagId)
+        : [...prev, tagId],
     );
   };
 
@@ -57,9 +66,11 @@ export default function EditPost() {
     try {
       await updatePost(id, { title, body, language });
 
-      await Promise.all(originalTags.map(tagId => removeTagFromPost(tagId, id)));
+      await Promise.all(
+        originalTags.map((tagId) => removeTagFromPost(tagId, id)),
+      );
 
-      await Promise.all(selectedTags.map(tagId => addTagToPost(tagId, id)));
+      await Promise.all(selectedTags.map((tagId) => addTagToPost(tagId, id)));
 
       router.push(`/posts/${id}`);
     } catch {
@@ -68,7 +79,10 @@ export default function EditPost() {
   };
 
   if (!mounted) return null;
-  if (!isLoggedIn) { router.push(`/posts/${id}`); return null; }
+  if (!isLoggedIn) {
+    router.push(`/posts/${id}`);
+    return null;
+  }
   if (loading) return <p className="p-6 text-devjima">Loading...</p>;
 
   return (
@@ -81,58 +95,21 @@ export default function EditPost() {
           type="text"
           placeholder="Title"
           value={title}
-          onChange={e => setTitle(e.target.value)}
+          onChange={(e) => setTitle(e.target.value)}
           className="border border-gray-600 bg-transparent rounded px-4 py-2 text-lg"
         />
-        <div className="flex gap-3">
-          <button type="button" onClick={() => setLanguage('en')}
-            className={`px-4 py-1 rounded-full text-sm border transition-colors ${
-              language === 'en' ? 'bg-devjima-teal text-white border-devjima-teal' : 'border-gray-600 text-gray-400'
-            }`}>EN</button>
-          <button type="button" onClick={() => setLanguage('ja')}
-            className={`px-4 py-1 rounded-full text-sm border transition-colors ${
-              language === 'ja' ? 'bg-devjima-teal text-white border-devjima-teal' : 'border-gray-600 text-gray-400'
-            }`}>JP</button>
-        </div>
+        <LanguageToggle language={language} onChange={setLanguage} />
 
-        {/* Tag picker */}
-        <div>
-          <p className="text-xs text-gray-500 mb-2 uppercase tracking-wider">Tags</p>
-          <div className="flex gap-2 flex-wrap">
-            {allTags.map(tag => (
-              <button
-                key={tag.id}
-                type="button"
-                onClick={() => toggleTag(tag.id)}
-                className={`px-3 py-1 rounded-full text-xs border transition-colors ${
-                  selectedTags.includes(tag.id)
-                    ? 'bg-devjima-teal text-white border-devjima-teal'
-                    : 'border-gray-600 text-gray-400 hover:border-gray-400'
-                }`}
-              >
-                {tag.name}
-              </button>
-            ))}
-          </div>
-        </div>
+        <TagPicker tags={allTags} selectedTags={selectedTags} onToggle={toggleTag} />
 
         <textarea
           placeholder="Write your post in Markdown..."
           value={body}
-          onChange={e => setBody(e.target.value)}
+          onChange={(e) => setBody(e.target.value)}
           rows={16}
           className="border border-gray-600 bg-transparent rounded px-4 py-2 font-mono text-sm resize-none"
         />
-        <div className="flex gap-4">
-          <button type="submit"
-            className="bg-devjima-teal text-white px-6 py-2 rounded hover:bg-devjima-teal-hover transition-colors">
-            Save changes
-          </button>
-          <button type="button" onClick={() => router.back()}
-            className="border border-gray-600 text-gray-400 px-6 py-2 rounded hover:border-gray-400 transition-colors">
-            Cancel
-          </button>
-        </div>
+        <SaveCancelButtons />
       </form>
     </div>
   );

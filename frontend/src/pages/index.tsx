@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { getPostsByAuthor, getPostsByTag, getRecentPosts, searchPosts } from "@/lib/api";
 import { Post } from "@/types";
-import PostCard from "@/components/PostCard";
-import Sidebar from "@/components/Sidebar";
+import PostCard from "@/components/features/PostCard";
+import Sidebar from "@/components/layout/Sidebar";
 import { useAuth } from "@/lib/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
