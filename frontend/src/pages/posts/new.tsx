@@ -1,3 +1,4 @@
+import BackButton from "@/components/BackButton";
 import { addTagToPost, createPost, getAllTags } from "@/lib/api";
 import { Tag } from "@/types";
 import { useRouter } from "next/router";
@@ -40,6 +41,7 @@ export default function NewPost() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-10">
+      <BackButton />
       <h1 className="text-2xl font-bold mb-8">Write a post</h1>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">

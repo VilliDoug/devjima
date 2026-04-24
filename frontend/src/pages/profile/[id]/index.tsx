@@ -1,3 +1,4 @@
+import BackButton from "@/components/BackButton";
 import { getUserProfile } from "@/lib/api";
 import { User } from "@/types";
 import { useRouter } from "next/router";
@@ -24,9 +25,11 @@ export default function UserProfile() {
 
     return (
         <div className="max-w-2xl mx-auto px-6 py-10">
+            <BackButton />
 
             {/* Profile header */}
             <div className="flex items-start gap-6 mb-10">
+                
                 <div className="w-16 h-16 rounded-full bg-devjima-teal flex items-center justify-center text-white text-2xl font-bold shrink-0">
                     {user.displayName?.[0] ?? user.username[0].toUpperCase()}
                 </div>

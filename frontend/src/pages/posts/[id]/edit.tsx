@@ -1,3 +1,4 @@
+import BackButton from "@/components/BackButton";
 import { getPostById, updatePost, getAllTags, addTagToPost, removeTagFromPost } from "@/lib/api";
 import { useAuth } from "@/lib/AuthContext";
 import { Tag } from "@/types";
@@ -72,6 +73,7 @@ export default function EditPost() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-10">
+      <BackButton />
       <h1 className="text-2xl font-bold mb-8">Edit Post</h1>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">

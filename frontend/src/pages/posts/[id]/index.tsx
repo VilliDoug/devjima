@@ -1,3 +1,4 @@
+import BackButton from "@/components/BackButton";
 import Comments from "@/components/Comments";
 import Sidebar from "@/components/Sidebar";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -58,19 +59,7 @@ export default function PostPage() {
     height: '100%',
     margin: '0 auto'
 }}>
-        <button
-        onClick={() => router.back()}
-        style={{
-            background: 'none', border: 'none', cursor: 'pointer',
-            color: '#555', fontSize: '14px', display: 'flex',
-            alignItems: 'center', gap: '6px', padding: '0',
-            marginBottom: '10px'
-        }}
-        onMouseEnter={e => (e.currentTarget).style.color = '#2D7D6F'}
-        onMouseLeave={e => (e.currentTarget).style.color = '#555'}
-    >
-        ← Back
-    </button>
+        <BackButton />
         <div className="flex items-center gap-2 mb-6">
           <Link
             href={`/profile/${post.author?.id}`}
