@@ -47,208 +47,77 @@ export default function Home() {
 
 if (loading) return <IndexFeedSkeleton />
 
-  return (
-    <div style={{ display: "flex", height: "calc(100vh - 52px)", overflow: 'hidden' }}>
-      <Sidebar />
+return (
+    <div className="flex overflow-hidden" style={{ height: 'calc(100vh - 52px)' }}>
+        <Sidebar />
 
-      <main
-        style={{
-          flex: "1 1 0",
-          minWidth: 0,
-          padding: "32px 24px 100px",
-          borderRight: "1px solid #1a1a1a",
-          overflowY: 'auto',
-          height: 'calc(100vh - 52px)'
-        }}
-      >
-        {/* Search and filter */}
-        <div style={{ maxWidth: "600px", margin: "0 auto 24px" }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              border: "1px solid #374151",
-              borderRadius: "6px",
-              padding: "6px 12px",
-              background: "transparent",
-            }}
-          >
-            {tagParam && (
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "4px",
-                  fontSize: "12px",
-                  color: "#2D7D6F",
-                  background: "#0F6E5620",
-                  padding: "2px 8px",
-                  borderRadius: "20px",
-                  border: "1px solid #0F6E5640",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                #{tagParam}
-                <button
-                  onClick={() => router.push("/")}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    color: "#2D7D6F",
-                    cursor: "pointer",
-                    padding: "0",
-                    fontSize: "14px",
-                    lineHeight: 1,
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  ×
-                </button>
-              </span>
-            )}
-            <input
-              type="text"
-              placeholder={tagParam ? "" : "Search posts..."}
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              style={{
-                flex: 1,
-                background: "none",
-                border: "none",
-                outline: "none",
-                fontSize: "14px",
-                color: "inherit",
-                padding: 0,
-              }}
-            />
-            {query && !tagParam && (
-              <button
-                onClick={() => {
-                  setQuery("");
-                  router.push("/");
-                }}
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: "#555",
-                  cursor: "pointer",
-                  fontSize: "18px",
-                  lineHeight: 1,
-                }}
-              >
-                ×
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Posts */}
-        <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-          {posts.length === 0 ? (
-            <p className="text-gray-500 text-sm text-center py-12">
-              No posts found. Try a different search!
-            </p>
-          ) : (
-            <div className="flex flex-col gap-6">
-              {posts.map((post) => (
-                <PostCard key={post.id} post={post} />
-              ))}
-            </div>
-          )}
-        </div>
-      </main>
-
-      {/* Right Sidebar */}
-      <aside
-        style={{
-          width: "300px",
-          flexShrink: 0,
-          padding: "32px 20px",
-          height: "calc(100vh - 52px)",
-          overflowY: "auto",
-          background: "#0d0d0d",
-          borderLeft: "1px solid #1a1a1a",
-        }}
-      >
-        <p
-          style={{
-            fontSize: "11px",
-            color: "#333",
-            textTransform: "uppercase",
-            letterSpacing: "0.05em",
-            marginBottom: "16px",
-          }}
-        >
-          Your recent posts
-        </p>
-        {!userId ? (
-          <p style={{ fontSize: "13px", color: "#444" }}>
-            <Link
-              href="/login"
-              style={{ color: "#2D7D6F", textDecoration: "none" }}
-            >
-              Login
-            </Link>{" "}
-            to see your posts
-          </p>
-        ) : userPosts.length === 0 ? (
-          <p style={{ fontSize: "13px", color: "#444" }}>
-            No posts yet.{" "}
-            <Link
-              href="/posts/new"
-              style={{ color: "#2D7D6F", textDecoration: "none" }}
-            >
-              Write one!
-            </Link>
-          </p>
-        ) : (
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "12px" }}
-          >
-            {userPosts.map((post) => (
-              <a
-                key={post.id}
-                href={`/posts/${post.id}`}
-                style={{ textDecoration: "none" }}
-              >
-                <div
-                  style={{
-                    padding: "10px 12px",
-                    borderRadius: "8px",
-                    border: "1px solid #1a1a1a",
-                    transition: "border-color 0.15s ease",
-                    cursor: "pointer",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.borderColor = "#2D7D6F")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.borderColor = "#1a1a1a")
-                  }
-                >
-                  <p
-                    style={{
-                      fontSize: "13px",
-                      color: "#ccc",
-                      lineHeight: 1.4,
-                      marginBottom: "4px",
-                    }}
-                  >
-                    {post.title.length > 50
-                      ? post.title.slice(0, 50) + "..."
-                      : post.title}
-                  </p>
-                  <p style={{ fontSize: "11px", color: "#444" }}>
-                    {new Date(post.createdAt).toLocaleDateString()}
-                  </p>
+        <main className="flex-1 min-w-0 border-r border-gray-800 overflow-y-auto px-6 pb-24 pt-8"
+              style={{ height: 'calc(100vh - 52px)' }}>
+            {/* Search and filter */}
+            <div className="max-w-[600px] mx-auto mb-6">
+                <div className="flex items-center gap-2 border border-gray-700 rounded-md px-3 py-2">
+                    {tagParam && (
+                        <span className="inline-flex items-center gap-1 text-xs text-devjima-teal bg-teal-950/30 px-2 py-0.5 rounded-full border border-teal-800/40 whitespace-nowrap">
+                            #{tagParam}
+                            <button onClick={() => router.push("/")}
+                                className="bg-transparent border-none text-devjima-teal cursor-pointer text-sm leading-none">×</button>
+                        </span>
+                    )}
+                    <input
+                        type="text"
+                        placeholder={tagParam ? "" : "Search posts..."}
+                        value={query}
+                        onChange={e => setQuery(e.target.value)}
+                        className="flex-1 bg-transparent border-none outline-none text-sm text-inherit p-0"
+                    />
+                    {query && !tagParam && (
+                        <button onClick={() => { setQuery(""); router.push("/"); }}
+                            className="bg-transparent border-none text-gray-500 cursor-pointer text-lg leading-none">×</button>
+                    )}
                 </div>
-              </a>
-            ))}
-          </div>
-        )}
-      </aside>
+            </div>
+
+            {/* Posts */}
+            <div className="max-w-[800px] mx-auto">
+                {posts.length === 0 ? (
+                    <p className="text-gray-500 text-sm text-center py-12">No posts found. Try a different search!</p>
+                ) : (
+                    <div className="flex flex-col gap-6">
+                        {posts.map(post => <PostCard key={post.id} post={post} />)}
+                    </div>
+                )}
+            </div>
+        </main>
+
+        {/* Right Sidebar */}
+        <aside className="shrink-0 px-5 py-8 overflow-y-auto bg-[#0d0d0d] border-l border-gray-800"
+               style={{ width: '300px', height: 'calc(100vh - 52px)' }}>
+            <p className="text-xs text-gray-600 uppercase tracking-widest mb-4">Your recent posts</p>
+            {!userId ? (
+                <p className="text-sm text-gray-600">
+                    <Link href="/login" className="text-devjima-teal no-underline">Login</Link> to see your posts
+                </p>
+            ) : userPosts.length === 0 ? (
+                <p className="text-sm text-gray-600">
+                    No posts yet. <Link href="/posts/new" className="text-devjima-teal no-underline">Write one!</Link>
+                </p>
+            ) : (
+                <div className="flex flex-col gap-3">
+                    {userPosts.map(post => (
+                        <a key={post.id} href={`/posts/${post.id}`} className="no-underline group">
+                            <div className="px-3 py-2.5 rounded-lg border border-gray-800 cursor-pointer transition-colors group-hover:border-devjima-teal">
+                                <p className="text-sm text-gray-300 leading-snug mb-1">
+                                    {post.title.length > 50 ? post.title.slice(0, 50) + "..." : post.title}
+                                </p>
+                                <p className="text-xs text-gray-600">
+                                    {new Date(post.createdAt).toLocaleDateString()}
+                                </p>
+                            </div>
+                        </a>
+                    ))}
+                </div>
+            )}
+        </aside>
     </div>
-  );
+);
 }

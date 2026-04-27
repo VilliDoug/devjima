@@ -16,7 +16,6 @@ export default function Landing() {
   useEffect(() => {
     if (isLoggedIn) router.push('/');
   }, [isLoggedIn]);
-  
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -31,280 +30,72 @@ export default function Landing() {
     return () => clearInterval(interval);
   }, []);
 
-  const btn = (bg: string): React.CSSProperties => ({
-    padding: "12px 28px",
-    background: bg,
-    borderRadius: "6px",
-    color: "#fff",
-    fontSize: "14px",
-    fontWeight: 500,
-    textDecoration: "none",
-    transition: "background 0.2s ease",
-    display: "inline-block",
+  const fadeUp = (delay: string): React.CSSProperties => ({
+    opacity: visible ? 1 : 0,
+    transform: visible ? "translateY(0)" : "translateY(32px)",
+    transition: `all 0.7s ${delay} ease`,
   });
 
   return (
-    <div
-      style={{
-        background: "#0a0a0a",
-        minHeight: "100vh",
-        color: "#fff",
-        fontFamily: "Inter, sans-serif",
-      }}
-    >
+    <div className="bg-[#0a0a0a] min-h-screen text-white font-sans">
+
       {/* Navbar */}
-      <nav
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "20px 48px",
-          borderBottom: "1px solid #1a1a1a",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "JetBrains Mono, monospace",
-            fontSize: "18px",
-            fontWeight: 600,
-          }}
-        >&lt;
-          <span style={{ color: "#2D7D6F" }}>Dev</span>&gt;Jima
+      <nav className="flex items-center justify-between px-12 py-5 border-b border-gray-900">
+        <span className="font-bold text-lg" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          &lt;<span className="text-devjima-teal">Dev</span>&gt;Jima
         </span>
-        <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
-          <Link
-            href="/"
-            style={{ fontSize: "14px", color: "#888", textDecoration: "none" }}
-          >
-            Feed
-          </Link>
-          <Link
-            href="/login"
-            style={{
-              fontSize: "13px",
-              padding: "7px 16px",
-              border: "1px solid #333",
-              borderRadius: "20px",
-              color: "#ccc",
-              textDecoration: "none",
-              transition: "border-color 0.2s, color 0.2s",
-            }}
-            onMouseEnter={(e) => {
-              (e.target as HTMLElement).style.borderColor = "#2D7D6F";
-              (e.target as HTMLElement).style.color = "#fff";
-            }}
-            onMouseLeave={(e) => {
-              (e.target as HTMLElement).style.borderColor = "#333";
-              (e.target as HTMLElement).style.color = "#ccc";
-            }}
-          >
-            Login
-          </Link>
-          <Link
-            href="/register"
-            style={{
-              fontSize: "13px",
-              padding: "7px 16px",
-              border: "1px solid #2D7D6F",
-              borderRadius: "20px",
-              color: "#fff",
-              textDecoration: "none",
-              background: "#2D7D6F",
-              transition: "background 0.2s ease",
-            }}
-            onMouseEnter={(e) =>
-              ((e.target as HTMLElement).style.background = "#1F5C52")
-            }
-            onMouseLeave={(e) =>
-              ((e.target as HTMLElement).style.background = "#2D7D6F")
-            }
-          >
-            Sign up
-          </Link>
+        <div className="flex items-center gap-6">
+          <Link href="/" className="text-sm text-gray-500 no-underline hover:text-gray-300 transition-colors">Feed</Link>
+          <Link href="/login" className="text-sm px-4 py-1.5 border border-gray-700 rounded-full text-gray-300 no-underline hover:border-devjima-teal hover:text-white transition-colors">Login</Link>
+          <Link href="/register" className="text-sm px-4 py-1.5 bg-devjima-teal border border-devjima-teal rounded-full text-white no-underline hover:bg-devjima-teal-hover transition-colors">Sign up</Link>
         </div>
       </nav>
 
       {/* Hero */}
-      <section
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          textAlign: "center",
-          padding: "80px 48px 60px",
-        }}
-      >
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "8px",
-            fontSize: "12px",
-            color: "#2D7D6F",
-            border: "1px solid #1F5C52",
-            borderRadius: "20px",
-            padding: "5px 14px",
-            marginBottom: "32px",
-            fontFamily: "JetBrains Mono, monospace",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(20px)",
-            transition: "all 0.7s ease",
-          }}
-        >
-          <span
-            style={{
-              width: "6px",
-              height: "6px",
-              borderRadius: "50%",
-              background: "#2D7D6F",
-              display: "inline-block",
-              animation: "pulse 2s infinite",
-            }}
-          />
+      <section className="flex flex-col items-center text-center px-12 pt-20 pb-16">
+
+        {/* Beta badge */}
+        <div className="inline-flex items-center gap-2 text-xs text-devjima-teal border border-[#1F5C52] rounded-full px-3.5 py-1.5 mb-8"
+             style={{ ...fadeUp('0s'), fontFamily: 'JetBrains Mono, monospace' }}>
+          <span className="w-1.5 h-1.5 rounded-full bg-devjima-teal inline-block" style={{ animation: 'pulse 2s infinite' }} />
           Now in beta · 長崎発、世界へ
         </div>
 
-        <h1
-          style={{
-            fontSize: "72px",
-            fontWeight: 700,
-            lineHeight: 1.05,
-            letterSpacing: "-3px",
-            maxWidth: "800px",
-            marginBottom: "8px",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(32px)",
-            transition: "all 0.7s 0.15s ease",
-          }}
-        >
-          Bridge the <span style={{ color: "#2D7D6F" }}>Gap</span>{" "}
-          <span style={{ color: "#D4537E" }}>.</span>
+        {/* Title */}
+        <h1 className="text-7xl font-bold leading-none tracking-tighter max-w-[800px] mb-2"
+            style={fadeUp('0.15s')}>
+          Bridge the <span className="text-devjima-teal">Gap</span>{" "}
+          <span className="text-pink-400">.</span>
         </h1>
 
-        <p
-          style={{
-            fontSize: "18px",
-            color: "#666",
-            maxWidth: "520px",
-            lineHeight: 1.6,
-            marginBottom: "4px",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(32px)",
-            transition: "all 0.7s 0.3s ease",
-          }}
-        >
-          A bilingual developer community connecting Japanese tech culture with
-          the world.
+        {/* Subtitle */}
+        <p className="text-lg text-gray-600 max-w-[520px] leading-relaxed mb-1"
+           style={fadeUp('0.3s')}>
+          A bilingual developer community connecting Japanese tech culture with the world.
         </p>
-
-        <p
-          style={{
-            fontSize: "14px",
-            color: "#444",
-            marginBottom: "40px",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(32px)",
-            transition: "all 0.7s 0.3s ease",
-          }}
-        >
+        <p className="text-sm text-gray-700 mb-10" style={fadeUp('0.3s')}>
           日本のテック文化と世界をつなぐ、バイリンガル開発者コミュニティ。
         </p>
 
-        <div
-          style={{
-            display: "flex",
-            gap: "12px",
-            marginBottom: "64px",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(32px)",
-            transition: "all 0.7s 0.45s ease",
-          }}
-        >
-          <Link
-            href="/"
-            style={{ ...btn("#2D7D6F") }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "#1F5C52")
-            }
-            onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "#2D7D6F")
-            }
-          >
+        {/* CTA buttons */}
+        <div className="flex gap-3 mb-16" style={fadeUp('0.45s')}>
+          <Link href="/" className="px-7 py-3 bg-devjima-teal rounded-md text-white text-sm font-medium no-underline hover:bg-devjima-teal-hover transition-colors">
             Explore feed
           </Link>
-          <Link
-            href="/register"
-            style={{ ...btn("#D4537E") }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "#993556")
-            }
-            onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "#D4537E")
-            }
-          >
+          <Link href="/register" className="px-7 py-3 bg-pink-500 rounded-md text-white text-sm font-medium no-underline hover:bg-pink-700 transition-colors">
             Join DevJima
           </Link>
-          <Link
-            href="/login"
-            style={{
-              padding: "12px 28px",
-              background: "transparent",
-              border: "1px solid #2a2a2a",
-              borderRadius: "6px",
-              color: "#888",
-              fontSize: "13px",
-              textDecoration: "none",
-              transition: "border-color 0.2s, color 0.2s",
-              display: "inline-block",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor = "#555";
-              (e.currentTarget as HTMLElement).style.color = "#ccc";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor = "#2a2a2a";
-              (e.currentTarget as HTMLElement).style.color = "#888";
-            }}
-          >
+          <Link href="/login" className="px-7 py-3 bg-transparent border border-gray-800 rounded-md text-gray-500 text-sm no-underline hover:border-gray-500 hover:text-gray-300 transition-colors">
             Already a member?
           </Link>
         </div>
 
-        {/* Bridge SVG — loops every 4s */}
-        <div
-          style={{
-            width: "100%",
-            maxWidth: "600px",
-            marginBottom: "64px",
-            opacity: visible ? 1 : 0,
-            transition: "opacity 0.7s 0.6s ease",
-          }}
-        >
-          <svg
-            key={bridgeKey}
-            viewBox="0 0 600 60"
-            fill="none"
-            style={{ width: "100%", height: "60px" }}
-          >
-            <line
-              x1="0"
-              y1="30"
-              x2="600"
-              y2="30"
-              stroke="#1a1a1a"
-              strokeWidth="1"
-            />
-            <path
-              d="M50 30 Q150 5 300 15 Q450 25 550 30"
-              stroke="#2D7D6F"
-              strokeWidth="1.5"
-              fill="none"
-              style={{
-                strokeDasharray: 600,
-                strokeDashoffset: 0,
-                animation: "drawBridge 1.5s ease forwards",
-              }}
-            />
+        {/* Bridge SVG */}
+        <div className="w-full max-w-[600px] mb-16" style={{ opacity: visible ? 1 : 0, transition: 'opacity 0.7s 0.6s ease' }}>
+          <svg key={bridgeKey} viewBox="0 0 600 60" fill="none" className="w-full h-[60px]">
+            <line x1="0" y1="30" x2="600" y2="30" stroke="#1a1a1a" strokeWidth="1" />
+            <path d="M50 30 Q150 5 300 15 Q450 25 550 30" stroke="#2D7D6F" strokeWidth="1.5" fill="none"
+                  style={{ strokeDasharray: 600, strokeDashoffset: 0, animation: 'drawBridge 1.5s ease forwards' }} />
             <circle cx="50" cy="30" r="5" fill="#2D7D6F" opacity="0.8" />
             <circle cx="300" cy="15" r="3" fill="#D4537E" />
             <circle cx="550" cy="30" r="5" fill="#D4537E" opacity="0.8" />
@@ -312,177 +103,55 @@ export default function Landing() {
         </div>
 
         {/* Stats */}
-        <div
-          style={{
-            display: "flex",
-            gap: "48px",
-            padding: "20px 0",
-            borderTop: "1px solid #111",
-            borderBottom: "1px solid #111",
-            width: "100%",
-            maxWidth: "500px",
-            justifyContent: "center",
-            marginBottom: "16px",
-            opacity: visible ? 1 : 0,
-            transition: "all 0.7s 0.7s ease",
-          }}
-        >
-          {[
-            [postCount, "Posts"],
-            [memberCount, "Members"],
-            [countryCount, "Countries"],
-          ].map(([num, label]) => (
-            <div key={String(label)} style={{ textAlign: "center" }}>
-              <div
-                style={{
-                  fontSize: "28px",
-                  fontWeight: 700,
-                  fontFamily: "JetBrains Mono, monospace",
-                  color: "#2D7D6F",
-                }}
-              >
+        <div className="flex gap-12 py-5 border-t border-b border-[#111] w-full max-w-[500px] justify-center mb-4"
+             style={fadeUp('0.7s')}>
+          {[[postCount, "Posts"], [memberCount, "Members"], [countryCount, "Countries"]].map(([num, label]) => (
+            <div key={String(label)} className="text-center">
+              <div className="text-3xl font-bold text-devjima-teal" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
                 {Number(num) > 0 ? `${num}+` : "—"}
               </div>
-              <div
-                style={{ fontSize: "12px", color: "#555", marginTop: "2px" }}
-              >
-                {String(label)}
-              </div>
+              <div className="text-xs text-gray-600 mt-0.5">{String(label)}</div>
             </div>
           ))}
         </div>
 
-        <p
-          style={{
-            fontSize: "13px",
-            color: "#444",
-            marginBottom: "80px",
-            opacity: visible ? 1 : 0,
-            transition: "all 0.7s 0.8s ease",
-          }}
-        >
+        <p className="text-sm text-gray-700 mb-20" style={fadeUp('0.8s')}>
           Write, share, and collaborate with developers across the language gap.
         </p>
       </section>
 
       {/* Value prop cards */}
-      <div style={{ padding: "0 48px 80px" }}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "1px",
-            background: "#111",
-            border: "1px solid #111",
-            borderRadius: "12px",
-            overflow: "hidden",
-            maxWidth: "900px",
-            margin: "0 auto 80px",
-          }}
-        >
+      <div className="px-12 pb-20">
+        <div className="grid grid-cols-3 gap-px bg-[#111] border border-[#111] rounded-xl overflow-hidden max-w-[900px] mx-auto mb-20">
           {[
-            {
-              accent: "#2D7D6F",
-              title: "For Japanese developers",
-              body: "Get global perspectives on your career, code, and culture. Connect with engineers from around the world.",
-            },
-            {
-              accent: "#D4537E",
-              title: "For foreign engineers",
-              body: "Gain practical insight into Japan's tech culture. Navigate the job market with help from those who've done it.",
-            },
-            {
-              accent: "#333",
-              title: "Bilingual by design",
-              body: "Posts in English and Japanese, side by side. Real conversation across the language gap.",
-            },
+            { accent: "#2D7D6F", title: "For Japanese developers", body: "Get global perspectives on your career, code, and culture. Connect with engineers from around the world." },
+            { accent: "#D4537E", title: "For foreign engineers", body: "Gain practical insight into Japan's tech culture. Navigate the job market with help from those who've done it." },
+            { accent: "#333", title: "Bilingual by design", body: "Posts in English and Japanese, side by side. Real conversation across the language gap." },
           ].map(({ accent, title, body }) => (
-            <div
-              key={title}
-              style={{ background: "#0e0e0e", padding: "32px 28px" }}
-            >
-              <div
-                style={{
-                  width: "24px",
-                  height: "2px",
-                  borderRadius: "1px",
-                  background: accent,
-                  marginBottom: "16px",
-                }}
-              />
-              <h3
-                style={{
-                  fontSize: "15px",
-                  fontWeight: 600,
-                  marginBottom: "8px",
-                  color: "#e0e0e0",
-                }}
-              >
-                {title}
-              </h3>
-              <p style={{ fontSize: "13px", color: "#555", lineHeight: 1.6 }}>
-                {body}
-              </p>
+            <div key={title} className="bg-[#0e0e0e] px-7 py-8">
+              <div className="w-6 h-0.5 rounded-sm mb-4" style={{ background: accent }} />
+              <h3 className="text-sm font-semibold mb-2 text-gray-200">{title}</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">{body}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* Footer CTA */}
-      <div
-        style={{
-          textAlign: "center",
-          padding: "60px 48px",
-          borderTop: "1px solid #111",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "36px",
-            fontWeight: 700,
-            letterSpacing: "-1px",
-            marginBottom: "12px",
-          }}
-        >
-          Ready to cross the bridge?
-        </h2>
-        <p style={{ fontSize: "14px", color: "#555", marginBottom: "28px" }}>
-          Join the community where Japan&apos;s tech world meets the rest.
-        </p>
-        <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
-          <Link
-            href="/register"
-            style={{ ...btn("#D4537E") }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "#993556")
-            }
-            onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "#D4537E")
-            }
-          >
+      <div className="text-center px-12 py-16 border-t border-[#111]">
+        <h2 className="text-4xl font-bold tracking-tight mb-3">Ready to cross the bridge?</h2>
+        <p className="text-sm text-gray-600 mb-7">Join the community where Japan&apos;s tech world meets the rest.</p>
+        <div className="flex gap-3 justify-center mb-4">
+          <Link href="/register" className="px-7 py-3 bg-pink-500 rounded-md text-white text-sm font-medium no-underline hover:bg-pink-700 transition-colors">
             Join DevJima
           </Link>
-          <Link
-            href="/"
-            style={{ ...btn("#2D7D6F") }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "#1F5C52")
-            }
-            onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "#2D7D6F")
-            }
-          >
+          <Link href="/" className="px-7 py-3 bg-devjima-teal rounded-md text-white text-sm font-medium no-underline hover:bg-devjima-teal-hover transition-colors">
             Explore feed
           </Link>
         </div>
-        <p style={{ fontSize: "12px", color: "#444", marginTop: "16px" }}>
+        <p className="text-xs text-gray-700">
           Already a member?{" "}
-          <Link
-            href="/login"
-            style={{ color: "#2D7D6F", textDecoration: "none" }}
-          >
-            Login here
-          </Link>
+          <Link href="/login" className="text-devjima-teal no-underline hover:underline">Login here</Link>
         </p>
       </div>
 
