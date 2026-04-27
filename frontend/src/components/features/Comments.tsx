@@ -18,7 +18,6 @@ export default function Comments({ postId }: { postId: number }) {
     e.preventDefault();
     try {
       await addComment(postId, newComment, language);
-      // refetch to show new one
       const updated = await getCommentsByPost(postId);
       setComments(updated);
       setNewComment("");
