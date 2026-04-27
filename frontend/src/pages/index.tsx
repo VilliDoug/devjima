@@ -6,6 +6,7 @@ import Sidebar from "@/components/layout/Sidebar";
 import { useAuth } from "@/lib/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import IndexFeedSkeleton from "@/components/ui/skeletons/IndexFeedSkeleton";
 
 export default function Home() {
   const router = useRouter();
@@ -37,7 +38,6 @@ export default function Home() {
     }
   }, [query, language, tagParam]);
 
-  // Fetch user's recent posts
   useEffect(() => {
     if (!userId) return;
     getPostsByAuthor(userId)
@@ -45,7 +45,7 @@ export default function Home() {
       .catch((err) => console.error(err));
   }, [userId]);
 
-  if (loading) return <p className="p-6">Loading...</p>;
+if (loading) return <IndexFeedSkeleton />
 
   return (
     <div style={{ display: "flex", height: "calc(100vh - 52px)", overflow: 'hidden' }}>

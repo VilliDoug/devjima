@@ -1,4 +1,5 @@
 import BackButton from "@/components/ui/BackButton";
+import ProfileSkeleton from "@/components/ui/skeletons/ProfileSkeleton";
 import { getUserProfile } from "@/lib/api";
 import { User } from "@/types";
 import { useRouter } from "next/router";
@@ -19,7 +20,7 @@ export default function UserProfile() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <p className="p-6 text-devjima">Loading...</p>;
+  if (loading) return <ProfileSkeleton />;
 
   if (!user)
     return <p className="p-6 text-gray-600">User profile not found.</p>;

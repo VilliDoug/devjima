@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import TranslateButton from "@/components/ui/TranslateButton";
 import EditActionButtons from "@/components/ui/EditActionButtons";
+import PostDetailSkeleton from "@/components/ui/skeletons/PostDetailSkeleton";
 
 export default function PostPage() {
   const router = useRouter();
@@ -47,7 +48,7 @@ export default function PostPage() {
     }
   }, [post, translatedHtml]);
 
-  if (loading) return <p className="p-6 text-devjima">Loading...</p>;
+  if (loading) return <PostDetailSkeleton />;
   if (!post) return <p className="p-6 text-gray-400">Post not found.</p>;
 
   return (
