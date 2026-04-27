@@ -2,17 +2,11 @@ import { LoginResponse, Post, PostComment, Tag, User } from "@/types";
 
 export const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
 
-// helper function - requests go through here
-// T is TypeScript generic "whatever type the caller expects"
 async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
-    // read the JWT Token from browser storage
     const token = localStorage.getItem('token');
 
-    // fetch send the network request to SpringBoot backend
-    // the raw response is built into "res"
-    // it contains res.ok (was status 200-299?), res.status (the actual status code), res.json(the json content itself)
     const res = await fetch(`${API_BASE}${endpoint}`, {
-        ...options, // caller said: method: '???', body: '???', and so on (from RequestInit)
+        ...options,
         headers: {
             'Content-Type': 'application/json',
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -28,18 +22,6 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
     }
     return await res.text() as unknown as T;
 }
-// caller passed:
-// options = { method: 'POST', body: '{"email":"test@test.com"}' }
-
-// after spread, fetch receives:
-// {
-//     method: 'POST',
-//     body: '{"email":"test@test.com"}',
-//     headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': 'Bearer eyJ...'
-//     }
-// }
 
 // Posts
 export const getPosts = () => request<Post[]>('/posts');
