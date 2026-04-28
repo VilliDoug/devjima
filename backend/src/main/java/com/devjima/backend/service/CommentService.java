@@ -13,6 +13,7 @@ import com.devjima.backend.repository.UserRepository;
 import java.util.List;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CommentService {
@@ -33,6 +34,7 @@ public class CommentService {
     this.dtoMapper = dtoMapper;
   }
 
+  @Transactional
   public CommentResponseDTO addComment(
       Long postId, String body, String language, Long authorId) {
     Post post = postRepository.findById(postId)
@@ -50,6 +52,7 @@ public class CommentService {
     return dtoMapper.toCommentResponseDTO(comment);
   }
 
+  @Transactional
   public CommentResponseDTO addReply(
       Long parentCommentId, String body, String language, Long authorId) {
     Comment parentComment = commentRepository.findById(parentCommentId)
@@ -69,6 +72,7 @@ public class CommentService {
     return dtoMapper.toCommentResponseDTO(reply);
   }
 
+  @Transactional(readOnly = true)
   public List<CommentResponseDTO> getCommentsByPost(Long postId) {
     Post post = postRepository.findById(postId)
         .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
@@ -78,6 +82,7 @@ public class CommentService {
         .toList();
   }
 
+  @Transactional
   public void deleteComment(Long commentId, String currentUserEmail) {
     Comment comment = commentRepository.findById(commentId)
         .orElseThrow(() -> new ResourceNotFoundException("Comment not found"));

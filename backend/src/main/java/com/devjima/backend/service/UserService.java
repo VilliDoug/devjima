@@ -10,27 +10,24 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
   private UserRepository userRepository;
   private DTOMapper dtoMapper;
-  // Encoder will "Hash" the password before saving
   private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-  // Constructor injection was recommended for the repository
   public UserService(UserRepository userRepository, DTOMapper dtoMapper){
     this.userRepository = userRepository;
     this.dtoMapper = dtoMapper;
   }
 
-  //  Register (POST) service method for a User - make separate DTO later!
+  @Transactional
   public User registerUser(String username, String email, String password){
-  //  Check if email already exists in DB
     if (userRepository.findByEmail(email).isPresent()) {
       throw new RuntimeException("Email already in use");
     }
-  //  Build User
     User user = new User();
     user.setUsername(username);
     user.setEmail(email);
@@ -39,6 +36,7 @@ public class UserService {
     return user;
   }
 
+  @Transactional(readOnly = true)
   public User loginUser(String email, String password) {
     User user = userRepository.findByEmail(email)
         .orElseThrow(() -> new RuntimeException("Unregistered email - please verify the email address"));
@@ -49,17 +47,20 @@ public class UserService {
     return user;
   }
 
+  @Transactional(readOnly = true)
   public User findByEmail(String email) {
     return userRepository.findByEmail(email)
         .orElseThrow(() -> new ResourceNotFoundException("User not found"));
   }
 
+  @Transactional(readOnly = true)
   public UserProfileDTO getUserProfile(Long id) {
     User user = userRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     return dtoMapper.toUserProfileDTO(user);
   }
 
+  @Transactional
   public UserProfileDTO updateUserProfile(
       Long id, String displayName, String bio,
       String avatarUrl, String preferredLang, String country, String currentUserEmail) {
@@ -79,10 +80,12 @@ public class UserService {
     return dtoMapper.toUserProfileDTO(user);
   }
 
+  @Transactional(readOnly = true)
   public Long getCountryCount() {
     return userRepository.countDistinctCountries();
   }
 
+  @Transactional(readOnly = true)
   public Long getUserCount() {
     return userRepository.count();
   }

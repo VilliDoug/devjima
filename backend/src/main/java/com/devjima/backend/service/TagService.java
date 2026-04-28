@@ -10,6 +10,7 @@ import com.devjima.backend.repository.PostRepository;
 import com.devjima.backend.repository.TagRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TagService {
@@ -27,6 +28,7 @@ public class TagService {
     this.dtoMapper = dtoMapper;
   }
 
+  @Transactional(readOnly = true)
   public List<TagDTO> getAllTags() {
     List<Tag> tags = tagRepository.findAll();
     return tags.stream()
@@ -34,6 +36,7 @@ public class TagService {
         .toList();
   }
 
+  @Transactional
   public PostResponseDTO addTagToPost(Long postId, Long tagId) {
     Post post = postRepository.findById(postId)
         .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
@@ -47,6 +50,7 @@ public class TagService {
     return dtoMapper.toPostResponseDTO(post);
   }
 
+  @Transactional
   public void deleteTagFromPost(Long tagId, Long postId) {
     Post post = postRepository.findById(postId)
         .orElseThrow(() -> new ResourceNotFoundException("Post not found"));

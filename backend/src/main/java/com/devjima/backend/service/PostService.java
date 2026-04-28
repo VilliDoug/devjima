@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 @Service
@@ -34,6 +35,7 @@ public class PostService {
     this.slugUtil = slugUtil;
   }
 
+  @Transactional
   public PostResponseDTO createPost(String title, String body, String language, Long authorId) {
     User user = userRepository.findById(authorId)
         .orElseThrow(() -> new ResourceNotFoundException("Post author not found"));
@@ -49,6 +51,7 @@ public class PostService {
     return dtoMapper.toPostResponseDTO(savedPost);
   }
 
+  @Transactional(readOnly = true)
   public List<PostResponseDTO> getAllPosts() {
     List<Post> posts = postRepository.findAll();
     return posts.stream()
@@ -56,12 +59,14 @@ public class PostService {
         .toList();
   }
 
+  @Transactional(readOnly = true)
   public PostResponseDTO getPostById(Long id) {
     Post post = postRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
     return dtoMapper.toPostResponseDTO(post);
   }
 
+  @Transactional(readOnly = true)
   public List<PostResponseDTO> getPostsByAuthor(Long authorId) {
     User author = userRepository.findById(authorId)
         .orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -71,6 +76,7 @@ public class PostService {
         .toList();
   }
 
+  @Transactional(readOnly = true)
   public List<PostResponseDTO> getPostsSortedByRecent() {
     List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc();
     return posts.stream()
@@ -78,7 +84,7 @@ public class PostService {
         .toList();
   };
 
-
+  @Transactional
   public PostResponseDTO updatePost(
       Long postId, String title, String body,
       String language, String currentUserEmail) {
@@ -97,6 +103,7 @@ public class PostService {
     return dtoMapper.toPostResponseDTO(post);
   }
 
+  @Transactional
   public void deletePost(
       Long postId, String currentUserEmail) {
     Post post = postRepository.findById(postId)
@@ -107,6 +114,7 @@ public class PostService {
     postRepository.delete(post);
   }
 
+  @Transactional(readOnly = true)
   public List<PostResponseDTO> searchByTitle(String title) {
     return postRepository.findByTitleContainingIgnoreCase(title)
         .stream()
@@ -114,6 +122,7 @@ public class PostService {
         .toList();
   }
 
+  @Transactional(readOnly = true)
   public List<PostResponseDTO> searchByLanguage(String language) {
     return postRepository.findByLanguage(language)
         .stream()
@@ -121,6 +130,7 @@ public class PostService {
         .toList();
   }
 
+  @Transactional(readOnly = true)
   public List<PostResponseDTO> searchByTitleAndLanguage(String title, String language) {
     return postRepository.findByTitleContainingIgnoreCaseAndLanguage(title, language)
         .stream()
@@ -128,6 +138,7 @@ public class PostService {
         .toList();
   }
 
+  @Transactional(readOnly = true)
   public List<PostResponseDTO> searchPosts(String title, String language) {
     if (StringUtils.hasText(title) && StringUtils.hasText(language)) {
       return searchByTitleAndLanguage(title, language);
@@ -139,10 +150,12 @@ public class PostService {
     return getAllPosts();
   }
 
+  @Transactional(readOnly = true)
   public Long getPostCount() {
     return postRepository.count();
   }
 
+  @Transactional(readOnly = true)
   public List<PostResponseDTO> getPostsByTag(String slug) {
     return postRepository.findByTagsSlug(slug)
     .stream()
