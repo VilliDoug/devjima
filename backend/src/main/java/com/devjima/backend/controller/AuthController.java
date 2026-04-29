@@ -7,6 +7,8 @@ import com.devjima.backend.model.User;
 import com.devjima.backend.service.UserService;
 import com.devjima.backend.util.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,11 @@ public class AuthController {
   }
 
   @Operation(summary = "ユーザー登録", description = "新しいユーザーアカウントを作成する")
+  @ApiResponses({
+      @ApiResponse(responseCode = "201", description = "登録成功"),
+      @ApiResponse(responseCode = "400", description = "リクエストが無効です"),
+      @ApiResponse(responseCode = "500", description = "メールアドレスが既に使用されています")
+  })
   @PostMapping("/register")
   public ResponseEntity<String> registerUser(
       @Valid @RequestBody RegisterRequestDTO request) {
@@ -40,6 +47,11 @@ public class AuthController {
   }
 
   @Operation(summary = "ログイン", description = "メールアドレスとパスワードで認証し、JWTトークンを返す")
+  @ApiResponses({
+      @ApiResponse(responseCode = "200", description = "ログイン成功"),
+      @ApiResponse(responseCode = "400", description = "リクエストが無効です"),
+      @ApiResponse(responseCode = "500", description = "メールアドレスまたはパスワードが正しくありません")
+  })
   @PostMapping("/login")
   public ResponseEntity<LoginResponseDTO> loginUser(
       @Valid @RequestBody LoginRequestDTO request) {

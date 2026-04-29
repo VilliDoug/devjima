@@ -1,6 +1,9 @@
 package com.devjima.backend.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -31,6 +34,12 @@ public class TranslationController {
   }
 
   @Operation(summary = "テキストを翻訳", description = "DeepL APIを使用してHTMLコンテンツを翻訳する。コードブロックは翻訳対象外")
+  @ApiResponses({
+      @ApiResponse(responseCode = "200", description = "翻訳成功"),
+      @ApiResponse(responseCode = "401", description = "認証が必要です"),
+      @ApiResponse(responseCode = "500", description = "DeepL APIエラー")
+  })
+  @SecurityRequirement(name = "bearerAuth")
   @PostMapping
   public ResponseEntity<Map<String, String>> translate(
       @RequestBody Map<String, String> request) throws Exception {
