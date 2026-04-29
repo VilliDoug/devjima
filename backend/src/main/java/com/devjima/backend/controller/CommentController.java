@@ -5,6 +5,8 @@ import com.devjima.backend.dto.CreateCommentRequestDTO;
 import com.devjima.backend.model.User;
 import com.devjima.backend.service.CommentService;
 import com.devjima.backend.util.AuthUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "コメント", description = "コメント管理エンドポイント")
 @RestController
 @RequestMapping("/api/comments")
 public class CommentController {
@@ -30,12 +33,14 @@ public class CommentController {
     this.authUtil = authUtil;
   }
 
+  @Operation(summary = "投稿のコメントを取得", description = "指定された投稿のトップレベルコメント一覧を返す")
   @GetMapping("/post/{postId}")
   public ResponseEntity<List<CommentResponseDTO>> getCommentsByPost(
       @PathVariable Long postId) {
     return ResponseEntity.ok(commentService.getCommentsByPost(postId));
   }
 
+  @Operation(summary = "コメントを追加", description = "指定された投稿にコメントを追加する。認証が必要")
   @PostMapping("/post/{postId}")
   public ResponseEntity<String> addComment(
       @PathVariable Long postId,
@@ -47,6 +52,7 @@ public class CommentController {
 
   }
 
+  @Operation(summary = "コメント返信を追加", description = "指定されたコメントに返信を追加する。認証が必要")
   @PostMapping("/reply/{commentId}")
   public ResponseEntity<String> addReply(
       @PathVariable Long commentId,
@@ -57,6 +63,7 @@ public class CommentController {
     return ResponseEntity.status(HttpStatus.CREATED).body("Comment created successfully");
   }
 
+  @Operation(summary = "コメントを削除", description = "コメントを論理削除する。コメントの著者のみ削除可能")
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
     String email = authUtil.getCurrentUserEmail();

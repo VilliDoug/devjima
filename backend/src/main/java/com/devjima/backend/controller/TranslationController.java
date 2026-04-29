@@ -1,5 +1,7 @@
 package com.devjima.backend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
+@Tag(name = "翻訳", description = "DeepL APIを使用した翻訳エンドポイント")
 @RestController
 @RequestMapping("/api/translate")
 public class TranslationController {
@@ -27,6 +30,7 @@ public class TranslationController {
     this.httpClient = httpClient;
   }
 
+  @Operation(summary = "テキストを翻訳", description = "DeepL APIを使用してHTMLコンテンツを翻訳する。コードブロックは翻訳対象外")
   @PostMapping
   public ResponseEntity<Map<String, String>> translate(
       @RequestBody Map<String, String> request) throws Exception {

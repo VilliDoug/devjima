@@ -6,6 +6,8 @@ import com.devjima.backend.dto.RegisterRequestDTO;
 import com.devjima.backend.model.User;
 import com.devjima.backend.service.UserService;
 import com.devjima.backend.util.JwtUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "認証", description = "ユーザー登録・ログイン認証エンドポイント")
 @Validated
 @RestController
 @RequestMapping("/api/auth")
@@ -28,6 +31,7 @@ public class AuthController {
     this.jwtUtil = jwtUtil;
   }
 
+  @Operation(summary = "ユーザー登録", description = "新しいユーザーアカウントを作成する")
   @PostMapping("/register")
   public ResponseEntity<String> registerUser(
       @Valid @RequestBody RegisterRequestDTO request) {
@@ -35,9 +39,7 @@ public class AuthController {
     return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
   }
 
-//  Method using JWT, returns a header (algorithm used - HS256)
-//  Payload - the data
-//  Signature - proves it wasn't tampered with
+  @Operation(summary = "ログイン", description = "メールアドレスとパスワードで認証し、JWTトークンを返す")
   @PostMapping("/login")
   public ResponseEntity<LoginResponseDTO> loginUser(
       @Valid @RequestBody LoginRequestDTO request) {

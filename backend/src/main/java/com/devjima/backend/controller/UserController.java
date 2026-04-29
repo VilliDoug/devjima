@@ -4,6 +4,8 @@ import com.devjima.backend.dto.UpdateProfileRequestDTO;
 import com.devjima.backend.dto.UserProfileDTO;
 import com.devjima.backend.service.UserService;
 import com.devjima.backend.util.AuthUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "ユーザー", description = "ユーザープロフィール管理エンドポイント")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -24,11 +27,13 @@ public class UserController {
     this.authUtil = authUtil;
   }
 
+  @Operation(summary = "ユーザープロフィールを取得", description = "指定されたIDのユーザープロフィールを返す")
   @GetMapping("/{id}")
   public ResponseEntity<UserProfileDTO> getUserProfileById(@PathVariable Long id) {
     return ResponseEntity.ok(userService.getUserProfile(id));
   }
 
+  @Operation(summary = "ユーザープロフィールを更新", description = "指定されたIDのユーザープロフィールを更新する。本人のみ更新可能")
   @PutMapping("/{id}")
   public ResponseEntity<UserProfileDTO> updateUserProfileById(
       @PathVariable Long id,
@@ -41,11 +46,13 @@ public class UserController {
     );
   }
 
+  @Operation(summary = "国数を取得", description = "登録ユーザーの出身国の総数を返す")
   @GetMapping("/countries/count")
   public ResponseEntity<Long> getCountryCount() {
     return ResponseEntity.ok(userService.getCountryCount());
   }
 
+  @Operation(summary = "ユーザー数を取得", description = "登録ユーザーの総数を返す")
   @GetMapping("/count")
   public ResponseEntity<Long> getUserCount() {
     return ResponseEntity.ok(userService.getUserCount());
