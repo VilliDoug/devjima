@@ -14,6 +14,7 @@ public class CorsConfig {
     CorsConfiguration config = new CorsConfiguration();
     config.addAllowedOrigin("http://localhost:3000");
     config.addAllowedOrigin("https://devjima-pearl.vercel.app");
+    config.addAllowedOrigin("https://villidoug.github.io");
     config.addAllowedMethod("*");
     config.addAllowedHeader("*");
     config.setAllowCredentials(true);
