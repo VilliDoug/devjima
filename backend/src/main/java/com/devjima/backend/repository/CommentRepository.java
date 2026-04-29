@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-//  Tricky bit, derived queries. Should look into it more later on
   List<Comment> findByPostAndParentCommentIsNull(Post post);
   List<Comment> findByParentComment(Comment parentComment);
 
