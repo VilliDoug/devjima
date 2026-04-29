@@ -50,4 +50,5 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    systemProperty 'docker.host', 'tcp://localhost:2375'
 }
