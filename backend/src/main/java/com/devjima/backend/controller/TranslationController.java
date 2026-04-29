@@ -21,6 +21,12 @@ public class TranslationController {
   @Value("${deepl.api.key}")
   private String deeplApiKey;
 
+  private final HttpClient httpClient;
+
+  public TranslationController(HttpClient httpClient) {
+    this.httpClient = httpClient;
+  }
+
   @PostMapping
   public ResponseEntity<Map<String, String>> translate(
       @RequestBody Map<String, String> request) throws Exception {
@@ -38,7 +44,6 @@ public class TranslationController {
 
     String requestBody = mapper.writeValueAsString(deeplRequest);
 
-    HttpClient client = HttpClient.newHttpClient();
     HttpRequest httpRequest = HttpRequest.newBuilder()
         .uri(URI.create("https://api-free.deepl.com/v2/translate"))
         .header("Authorization", "DeepL-Auth-Key " + deeplApiKey)
@@ -46,7 +51,7 @@ public class TranslationController {
         .POST(HttpRequest.BodyPublishers.ofString(requestBody))
         .build();
 
-    HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+    HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
     JsonNode root = mapper.readTree(response.body());
     String translatedText = root.path("translations").get(0).path("text").asText();
