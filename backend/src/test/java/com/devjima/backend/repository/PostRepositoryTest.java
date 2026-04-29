@@ -1,5 +1,6 @@
 package com.devjima.backend.repository;
 
+import com.devjima.backend.TestContainersConfig;
 import com.devjima.backend.model.Post;
 import com.devjima.backend.model.Tag;
 import com.devjima.backend.model.User;
@@ -25,8 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class PostRepositoryTest {
 
-  @Container
-  static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine");
+  static PostgreSQLContainer<?> postgres = TestContainersConfig.postgres;
 
   @DynamicPropertySource
   static void configureProperties(DynamicPropertyRegistry registry) {
