@@ -2,7 +2,7 @@ import BackButton from "@/components/ui/BackButton";
 import Comments from "@/components/features/Comments";
 import Sidebar from "@/components/layout/Sidebar";
 import { useTranslation } from "@/hooks/useTranslation";
-import { deletePost, getPostById } from "@/lib/api";
+import { deletePost, getPostById, getPostsByAuthor } from "@/lib/api";
 import { useAuth } from "@/lib/AuthContext";
 import { Post } from "@/types";
 import hljs from "highlight.js";
@@ -20,6 +20,7 @@ export default function PostPage() {
   const { translatedHtml, translating, translate } = useTranslation();
 
   const [post, setPost] = useState<Post | null>(null);
+  const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const handleDelete = async () => {
@@ -48,14 +49,22 @@ export default function PostPage() {
     }
   }, [post, translatedHtml]);
 
+  useEffect(() => {
+    if (!userId) return;
+    getPostsByAuthor(userId)
+    .then((data) => setUserPosts(data.slice(0, 5)))
+    .catch((err) => console.error(err));
+  }, [userId])
+
   if (loading) return <PostDetailSkeleton />;
   if (!post) return <p className="p-6 text-gray-400">Post not found.</p>;
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex overflow-hidden" style={{ height: 'calc(100vh - 52px)' }}>
       <Sidebar />
-      <main className="flex-1 min-w-0 w-full max-w-4xl mx-auto px-10 py-8 overflow-y-auto h-full">        
-        <BackButton />
+      <main className="flex-1 min-w-0 overflow-y-auto">
+        <div className="max-w-[740px] mx-auto px-10 py-8 mb-20">
+          <BackButton />
         <div className="flex items-center gap-2 mb-6">
           <Link
             href={`/profile/${post.author?.id}`}
@@ -109,13 +118,40 @@ export default function PostPage() {
 
         <hr className="border-none border-t border-gray-800 my-10" />
         <Comments postId={post.id} />
+        </div>        
       </main>
 
-      <aside className="w-72 shrink-0 px-5 py-8 h-full overflow-y-auto bg-[#0d0d0d] border-l border-gray-800">
-        <p className="text-xs text-gray-600 uppercase tracking-widest mb-4">
-          Your recent posts
+      <aside className="w-72 shrink-0 px-5 py-8 h-full overflow-y-auto bg-[#0d0d0d] border-l border-gray-800 sticky top-0"
+      style={{ height: 'calc(100vh - 52px)' }}>
+    <p className="text-xs text-gray-600 uppercase tracking-widest mb-4">
+        Your recent posts
+    </p>
+    {!userId ? (
+        <p className="text-sm text-gray-600">
+            <Link href="/login" className="text-devjima-teal no-underline">Login</Link> to see your posts
         </p>
-      </aside>
+    ) : userPosts.length === 0 ? (
+        <p className="text-sm text-gray-600">
+            No posts yet.{" "}
+            <Link href="/posts/new" className="text-devjima-teal no-underline">Write one!</Link>
+        </p>
+    ) : (
+        <div className="flex flex-col gap-3">
+            {userPosts.map(post => (
+                <a key={post.id} href={`/posts/${post.id}`} className="no-underline group">
+                    <div className="px-3 py-2.5 rounded-lg border border-gray-800 cursor-pointer transition-colors group-hover:border-devjima-teal">
+                        <p className="text-sm text-gray-300 leading-snug mb-1">
+                            {post.title.length > 50 ? post.title.slice(0, 50) + "..." : post.title}
+                        </p>
+                        <p className="text-xs text-gray-600">
+                            {new Date(post.createdAt).toLocaleDateString()}
+                        </p>
+                    </div>
+                </a>
+            ))}
+        </div>
+    )}
+</aside>
     </div>
   );
 }

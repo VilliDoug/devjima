@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const hiddenNavbar = ["/landing"];
-  const feedPages = ["/"];
+  const noScrollPages = ["/", "/posts"];
 
   return (
     <AuthProvider>
@@ -19,7 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <div
           style={{
             flex: 1,
-            overflow: feedPages.includes(router.pathname) ? "hidden" : "auto",
+            overflow: noScrollPages.some(p => router.pathname.startsWith(p)) ? "hidden" : "auto",
           }}
         >
           <Component {...pageProps} />
