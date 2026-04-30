@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import { getPostCount, getMemberCount, getCountryCount } from "@/lib/api";
 import { useAuth } from "@/lib/AuthContext";
 import router from "next/router";
+import MeganeBashi from "@/components/ui/MeganeBashi";
+import Footer from "@/components/layout/Footer";
 
 export default function Landing() {
   const [visible, setVisible] = useState(false);
-  const [bridgeKey, setBridgeKey] = useState(0);
   const [postCount, setPostCount] = useState<number>(0);
   const [memberCount, setMemberCount] = useState<number>(0);
   const [countryCount, setCountryCount] = useState<number>(0);
@@ -23,11 +24,6 @@ export default function Landing() {
     getPostCount().then(setPostCount);
     getMemberCount().then(setMemberCount);
     getCountryCount().then(setCountryCount);
-
-    const interval = setInterval(() => {
-      setBridgeKey((k) => k + 1);
-    }, 4000);
-    return () => clearInterval(interval);
   }, []);
 
   const fadeUp = (delay: string): React.CSSProperties => ({
@@ -55,6 +51,9 @@ export default function Landing() {
       <section className="flex flex-col items-center text-center px-12 pt-20 pb-16">
 
         {/* Beta badge */}
+        <h2 className="font-bold text-4xl mb-6" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          &lt;<span className="text-devjima-teal">Dev</span>&gt;Jima
+        </h2>
         <div className="inline-flex items-center gap-2 text-xs text-devjima-teal border border-[#1F5C52] rounded-full px-3.5 py-1.5 mb-8"
              style={{ ...fadeUp('0s'), fontFamily: 'JetBrains Mono, monospace' }}>
           <span className="w-1.5 h-1.5 rounded-full bg-devjima-teal inline-block" style={{ animation: 'pulse 2s infinite' }} />
@@ -62,11 +61,16 @@ export default function Landing() {
         </div>
 
         {/* Title */}
+        
         <h1 className="text-7xl font-bold leading-none tracking-tighter max-w-[800px] mb-2"
             style={fadeUp('0.15s')}>
           Bridge the <span className="text-devjima-teal">Gap</span>{" "}
           <span className="text-pink-400">.</span>
         </h1>
+        {/* 眼鏡橋 Bridge SVG */}
+        <div className="w-full max-w-[600px] mb-16" style={{ opacity: visible ? 1 : 0, transition: 'opacity 0.7s 0.6s ease' }}>
+  <MeganeBashi />
+</div>
 
         {/* Subtitle */}
         <p className="text-lg text-gray-600 max-w-[520px] leading-relaxed mb-1"
@@ -90,17 +94,7 @@ export default function Landing() {
           </Link>
         </div>
 
-        {/* Bridge SVG */}
-        <div className="w-full max-w-[600px] mb-16" style={{ opacity: visible ? 1 : 0, transition: 'opacity 0.7s 0.6s ease' }}>
-          <svg key={bridgeKey} viewBox="0 0 600 60" fill="none" className="w-full h-[60px]">
-            <line x1="0" y1="30" x2="600" y2="30" stroke="#1a1a1a" strokeWidth="1" />
-            <path d="M50 30 Q150 5 300 15 Q450 25 550 30" stroke="#2D7D6F" strokeWidth="1.5" fill="none"
-                  style={{ strokeDasharray: 600, strokeDashoffset: 0, animation: 'drawBridge 1.5s ease forwards' }} />
-            <circle cx="50" cy="30" r="5" fill="#2D7D6F" opacity="0.8" />
-            <circle cx="300" cy="15" r="3" fill="#D4537E" />
-            <circle cx="550" cy="30" r="5" fill="#D4537E" opacity="0.8" />
-          </svg>
-        </div>
+        
 
         {/* Stats */}
         <div className="flex gap-12 py-5 border-t border-b border-[#111] w-full max-w-[500px] justify-center mb-4"
@@ -155,14 +149,12 @@ export default function Landing() {
         </p>
       </div>
 
+      <Footer />
+
       <style>{`
         @keyframes pulse {
           0%, 100% { opacity: 0.4; }
           50% { opacity: 1; }
-        }
-        @keyframes drawBridge {
-          from { stroke-dashoffset: 600; }
-          to { stroke-dashoffset: 0; }
         }
       `}</style>
     </div>
