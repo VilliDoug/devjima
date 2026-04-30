@@ -20,6 +20,8 @@ export default function Home() {
   const [language, setLanguage] = useState("");
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setLoading(true)
     if (tagParam) {
       getPostsByTag(tagParam)
       .then(data => setPosts(data))
@@ -49,7 +51,7 @@ if (loading) return <IndexFeedSkeleton />
 
 return (
     <div className="flex overflow-hidden" style={{ height: 'calc(100vh - 52px)' }}>
-        <Sidebar />
+        <Sidebar language={language} onLanguageChange={setLanguage} />
 
         <main className="flex-1 min-w-0 border-r border-gray-800 overflow-y-auto px-6 pb-24 pt-8"
               style={{ height: 'calc(100vh - 52px)' }}>

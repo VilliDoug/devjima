@@ -5,7 +5,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export default function Sidebar() {
+interface SidebarProps {
+  language?: string;
+  onLanguageChange?: (lang: string) => void;
+}
+
+export default function Sidebar({ language = "", onLanguageChange }: SidebarProps) {
   const router = useRouter();
   const { isLoggedIn } = useAuth();
 
@@ -79,11 +84,16 @@ export default function Sidebar() {
         <p className="text-[11px] text-gray-700 mb-2 uppercase tracking-widest">Language</p>
         <div className="flex gap-1.5">
           {["en", "ja"].map(lang => (
-            <button key={lang}
-              className="px-3 py-1 rounded-full border border-gray-800 bg-transparent text-gray-600 text-xs cursor-pointer hover:border-devjima-teal hover:text-devjima-teal transition-all">
-              {lang === "en" ? "EN" : "JP"}
-            </button>
-          ))}
+  <button key={lang}
+    onClick={() => onLanguageChange?.(language === lang ? "" : lang)}
+    className={`px-3 py-1 rounded-full border text-xs cursor-pointer transition-all ${
+      language === lang
+        ? "border-devjima-teal text-devjima-teal bg-teal-950/30"
+        : "border-gray-800 bg-transparent text-gray-600 hover:border-devjima-teal hover:text-devjima-teal"
+    }`}>
+    {lang === "en" ? "EN" : "JP"}
+  </button>
+))}
         </div>
       </div>
 
@@ -93,7 +103,7 @@ export default function Sidebar() {
       {/* Write post */}
       {isLoggedIn && (
         <Link href="/posts/new"
-          className="block text-center px-4 py-2.5 bg-devjima-teal rounded-lg text-white no-underline text-sm font-medium hover:bg-devjima-teal-hover transition-colors mb-9">
+          className="block text-center px-4 py-2.5 bg-devjima-teal rounded-lg text-white no-underline text-sm font-medium hover:bg-devjima-teal-hover transition-colors mb-20">
           + Write post
         </Link>
       )}
