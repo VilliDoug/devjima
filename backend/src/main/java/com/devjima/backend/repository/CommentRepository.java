@@ -11,5 +11,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
   List<Comment> findByPostAndParentCommentIsNull(Post post);
   List<Comment> findByParentComment(Comment parentComment);
+  List<Comment> findByPost(Post post);
 
 }

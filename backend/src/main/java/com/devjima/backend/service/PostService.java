@@ -6,6 +6,7 @@ import com.devjima.backend.exception.UnauthorizedException;
 import com.devjima.backend.mapper.DTOMapper;
 import com.devjima.backend.model.Post;
 import com.devjima.backend.model.User;
+import com.devjima.backend.repository.CommentRepository;
 import com.devjima.backend.repository.PostRepository;
 import com.devjima.backend.repository.UserRepository;
 import com.devjima.backend.util.SlugUtil;
@@ -21,16 +22,19 @@ public class PostService {
 
   private final UserRepository userRepository;
   private final PostRepository postRepository;
+  private final CommentRepository commentRepository;
   private final DTOMapper dtoMapper;
   private final SlugUtil slugUtil;
 
   public PostService(
       UserRepository userRepository,
       PostRepository postRepository,
+      CommentRepository commentRepository,
       DTOMapper dtoMapper,
       SlugUtil slugUtil) {
     this.userRepository = userRepository;
     this.postRepository = postRepository;
+    this.commentRepository = commentRepository;
     this.dtoMapper = dtoMapper;
     this.slugUtil = slugUtil;
   }
@@ -111,6 +115,11 @@ public class PostService {
     if (!Objects.equals(post.getAuthor().getEmail(), currentUserEmail)) {
       throw new UnauthorizedException("Request unauthorized");
     }
+    post.getTags().clear();
+    postRepository.save(post);
+
+    commentRepository.deleteAll(commentRepository.findByPost(post));
+
     postRepository.delete(post);
   }
 
