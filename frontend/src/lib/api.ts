@@ -68,6 +68,12 @@ export const addComment = (postId: number, body: string, language: string) =>
         body: JSON.stringify({ body, language }),
     });
 
+export const addReply = (commentId: number, body: string, language: string ) =>
+    request<PostComment>(`/comments/reply/${commentId}`, {
+        method: 'POST',
+        body: JSON.stringify({ body, language }),
+    });
+
 export const deleteComment = (id: number) =>
     request<void>(`/comments/${id}`, { method: 'DELETE' });
 
