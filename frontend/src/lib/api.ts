@@ -86,6 +86,7 @@ export const updateUserProfile = (id: number, data: {
     bio?: string;
     avatarUrl?: string;
     preferredLang?: string;
+    country?: string;
 }) => request<User>(`/users/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
