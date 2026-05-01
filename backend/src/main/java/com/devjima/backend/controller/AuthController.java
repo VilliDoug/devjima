@@ -37,7 +37,7 @@ public class AuthController {
   @ApiResponses({
       @ApiResponse(responseCode = "201", description = "登録成功"),
       @ApiResponse(responseCode = "400", description = "リクエストが無効です"),
-      @ApiResponse(responseCode = "500", description = "メールアドレスが既に使用されています")
+      @ApiResponse(responseCode = "409", description = "メールアドレスが既に使用されています")
   })
   @PostMapping("/register")
   public ResponseEntity<String> registerUser(
@@ -50,7 +50,7 @@ public class AuthController {
   @ApiResponses({
       @ApiResponse(responseCode = "200", description = "ログイン成功"),
       @ApiResponse(responseCode = "400", description = "リクエストが無効です"),
-      @ApiResponse(responseCode = "500", description = "メールアドレスまたはパスワードが正しくありません")
+      @ApiResponse(responseCode = "401", description = "メールアドレスまたはパスワードが正しくありません")
   })
   @PostMapping("/login")
   public ResponseEntity<LoginResponseDTO> loginUser(
