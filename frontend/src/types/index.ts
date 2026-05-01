@@ -32,6 +32,7 @@ export interface User {
   bio: string | null;
   avatarUrl: string | null;
   preferredLang: string;
+  country: string;
   role: string;
   createdAt: string;
 }
