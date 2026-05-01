@@ -6,12 +6,14 @@ import { useAuth } from "@/lib/AuthContext";
 import { User } from "@/types";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { getData } from 'country-list';
 
 export default function UpdateUserProfile() {
   const { isLoggedIn } = useAuth();
   const router = useRouter();
   const id = Number(router.query.id);
   const [loading, setLoading] = useState(true);
+  const countries = getData();
 
   const [user, setUser] = useState<User | null>(null);
 
@@ -19,6 +21,7 @@ export default function UpdateUserProfile() {
   const [bio, setBio] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
   const [preferredLang, setPreferredLang] = useState("en");
+  const [country, setCountry] = useState("");
   const [error, setError] = useState("");
   const [mounted, setMounted] = useState(false);
 
@@ -36,6 +39,7 @@ export default function UpdateUserProfile() {
         setBio(data.bio ?? "");
         setAvatarUrl(data.avatarUrl ?? "");
         setPreferredLang(data.preferredLang ?? "en");
+        setCountry(data.country ?? "");
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
@@ -50,8 +54,25 @@ export default function UpdateUserProfile() {
 
   if (loading) return <p className="p-6 text-devjima">Loading...</p>;
 
+  const validate = (): boolean => {
+  if (!displayName.trim()) {
+    setError("表示名は必須です");
+    return false;
+  }
+  if (displayName.length > 50) {
+    setError("表示名は50文字以内で入力してください");
+    return false;
+  }
+  if (bio.length > 255) {
+    setError("自己紹介文は255文字以内で入力してください");
+    return false;
+  }  
+  return true;
+};
+
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
+    if (!validate()) return;
     try {
       await updateUserProfile(id, {
         displayName,
@@ -89,6 +110,18 @@ export default function UpdateUserProfile() {
             className="border border-gray-600 bg-transparent rounded px-4 py-2 resize-none"
           />
         </div>
+        <select
+  value={country}
+  onChange={(e) => setCountry(e.target.value)}
+  className="border border-gray-600 bg-[#0a0a0a] text-gray-300 rounded px-4 py-2 w-full"
+>
+  <option value="">Select a country</option>
+  {countries.map((c) => (
+    <option key={c.code} value={c.name}>
+      {c.name}
+    </option>
+  ))}
+</select>
         <div className="flex flex-col gap-1">
           <label className="text-sm text-gray-400">Avatar URL</label>
           <input
