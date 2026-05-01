@@ -93,7 +93,7 @@ public class PostController {
     return ResponseEntity.ok(posts);
   }
 
-  @Operation(summary = "最新投稿うぃ取得", description = "作成日時の降順で全投稿を返す")
+  @Operation(summary = "最新投稿を取得", description = "作成日時の降順で全投稿を返す")
   @ApiResponses({
       @ApiResponse(responseCode = "200", description = "取得成功")
   })
