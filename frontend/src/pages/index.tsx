@@ -18,6 +18,14 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [language, setLanguage] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+        setDebouncedQuery(query);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [query]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -27,18 +35,18 @@ export default function Home() {
       .then(data => setPosts(data))
       .catch(err => console.error(err))
       .finally(() => setLoading(false));
-    } else if (!query && !language) {
+    } else if (!debouncedQuery && !language) {
       getRecentPosts()
       .then(data => setPosts(data))
       .catch(err => console.error(err))
       .finally(() => setLoading(false)); 
     } else {
-      searchPosts(query, language)
+      searchPosts(debouncedQuery, language)
       .then(data => setPosts(data))
       .catch(err => console.error(err))
       .finally(() => setLoading(false))
     }
-  }, [query, language, tagParam]);
+  }, [debouncedQuery, language, tagParam]);
 
   useEffect(() => {
     if (!userId) return;
