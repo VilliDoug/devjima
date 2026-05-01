@@ -3,6 +3,7 @@ package com.devjima.backend.service;
 import com.devjima.backend.dto.UserProfileDTO;
 import com.devjima.backend.exception.ResourceNotFoundException;
 import com.devjima.backend.exception.UnauthorizedException;
+import com.devjima.backend.exception.DuplicateResourceException;
 import com.devjima.backend.mapper.DTOMapper;
 import com.devjima.backend.model.User;
 import com.devjima.backend.repository.UserRepository;
@@ -26,7 +27,7 @@ public class UserService {
   @Transactional
   public User registerUser(String username, String email, String password){
     if (userRepository.findByEmail(email).isPresent()) {
-      throw new RuntimeException("Email already in use");
+      throw new DuplicateResourceException("Email already in use");
     }
     User user = new User();
     user.setUsername(username);
@@ -39,10 +40,10 @@ public class UserService {
   @Transactional(readOnly = true)
   public User loginUser(String email, String password) {
     User user = userRepository.findByEmail(email)
-        .orElseThrow(() -> new RuntimeException("Unregistered email - please verify the email address"));
+        .orElseThrow(() -> new UnauthorizedException("Unregistered email - please verify the email address"));
 
     if (!passwordEncoder.matches(password, user.getPassword())) {
-      throw new RuntimeException("Invalid password");
+      throw new UnauthorizedException("Invalid password");
     }
     return user;
   }
