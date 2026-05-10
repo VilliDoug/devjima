@@ -17,10 +17,9 @@
 - [機能一覧](#4-機能一覧)
 - [工夫した点](#5-工夫した点)
 - [システム設計](#6-システム設計)
-- [セットアップ手順](#7-セットアップ手順)
-- [テスト](#8-テスト)
-- [APIドキュメント](#9-apiドキュメント)
-- [今後の予定](#10-今後の予定)
+- [テスト](#7-テスト)
+- [APIドキュメント](#8-apiドキュメント)
+- [今後の予定](#9-今後の予定)
 
 </details>
 <details open>
@@ -296,7 +295,7 @@ graph TB
 <details open>
 <summary>テスト</summary>
 
-## 8. テスト
+## 7. テスト
 
 ### バックエンドテスト
 
@@ -327,7 +326,7 @@ cd backend
 <details closed>
 <summary>APIドキュメント</summary>
 
-## 9. APIドキュメント
+## 8. APIドキュメント
 
 REST APIはSwagger UIで公開しています。
 ✔ [Swagger UI](https://villidoug.github.io/devjima/api/)
@@ -384,7 +383,7 @@ REST APIはSwagger UIで公開しています。
 
 </details>
 
-## 10. 今後の予定
+## 9. 今後の予定
 
 | 機能 | 内容 |
 |------|------|
